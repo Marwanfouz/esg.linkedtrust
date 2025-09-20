@@ -10,7 +10,6 @@ import {
   Card,
   CardContent,
 } from '@mui/material';
- ddd
 import {
   Business,
   Link as LinkIcon,
@@ -26,20 +25,34 @@ import type { ESGMetrics, ValidationMetrics } from '../../services/esgCalculatio
 
 interface CompanyDetailsProps {
   claim: Claim;
+  esgMetrics?: ESGMetrics | null;
+  validationMetrics?: ValidationMetrics | null;
+  hasESGData?: boolean;
 }
 
-const CompanyDetails: React.FC<CompanyDetailsProps> = ({ claim }) => {
+const CompanyDetails: React.FC<CompanyDetailsProps> = ({ 
+  claim, 
+  esgMetrics: providedESGMetrics, 
+  validationMetrics: providedValidationMetrics, 
+  hasESGData: providedHasESGData 
+}) => {
   const companyName = transformUtils.extractCompanyName(claim.subject);
   
-  // Use real ESG metrics calculation hook
+  // Use provided metrics if available, otherwise fallback to hook calculation
+  const shouldUseHook = !providedESGMetrics || !providedValidationMetrics;
   const { 
-    esgMetrics, 
-    validationMetrics, 
-    hasData: hasESGData 
-  } = useESGMetrics(claim.subject, claim.subject);
+    esgMetrics: hookESGMetrics, 
+    validationMetrics: hookValidationMetrics, 
+    hasData: hookHasData 
+  } = useESGMetrics(shouldUseHook ? claim.subject : undefined, shouldUseHook ? claim.subject : undefined);
+  
+  // Determine which metrics to use
+  const esgMetrics = providedESGMetrics || hookESGMetrics;
+  const validationMetrics = providedValidationMetrics || hookValidationMetrics;
+  const hasData = providedHasESGData !== undefined ? providedHasESGData : hookHasData;
   
   // Use calculated metrics if available, otherwise fallback to claim data
-  const displayMetrics = hasESGData ? esgMetrics : {
+  const displayMetrics = hasData && esgMetrics ? esgMetrics : {
     overallScore: claim.score || 0,
     overallPercentage: ((claim.score || 0) + 1) / 2 * 100,
     overallStars: claim.stars || 0,
@@ -58,7 +71,7 @@ const CompanyDetails: React.FC<CompanyDetailsProps> = ({ claim }) => {
     lastUpdated: new Date()
   } as ESGMetrics;
   
-  const displayValidationMetrics = hasESGData && validationMetrics ? validationMetrics : {
+  const displayValidationMetrics = hasData && validationMetrics ? validationMetrics : {
     totalValidations: claim.validators?.length || 0,
     endorsements: claim.validators?.filter(v => v.rating >= 4).length || 0,
     rejections: claim.validators?.filter(v => v.rating <= 2).length || 0,
@@ -120,7 +133,7 @@ const CompanyDetails: React.FC<CompanyDetailsProps> = ({ claim }) => {
                     </Typography>
                   </Box>
                   
-                  {hasESGData && (
+                  {hasData && (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <Typography variant="body2" color="success.main" sx={{ fontWeight: 500 }}>
                         {displayMetrics.industryPercentile}th percentile
@@ -254,7 +267,7 @@ const CompanyDetails: React.FC<CompanyDetailsProps> = ({ claim }) => {
                 </Typography>
               </Box>
 
-              {hasESGData && (
+              {hasData && (
                 <Box sx={{ mb: 2 }}>
                   <Typography variant="body2" color="text.secondary">
                     Industry Ranking

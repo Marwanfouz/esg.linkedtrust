@@ -21,28 +21,93 @@
       "lastUpdatedAt": "2024-01-15T10:30:00Z",
       "validators": [
         {
-          "name": "Dr. Sarah Johnson",
-          "role": "ESG Analyst",
-          "rating": 4,
-          "statement": "Strong environmental initiatives and governance structure with clear sustainability roadmap.",
-          "verified": true,
-          "organization": "Sustainability Institute"
-        },
-        {
-          "name": "Michael Chen",
-          "role": "Sustainability Expert",
-          "rating": 4,
-          "statement": "Impressive carbon reduction commitments and transparency in reporting.",
-          "verified": true,
-          "organization": "Green Finance Council"
-        },
-        {
-          "name": "Prof. Emma Williams",
-          "role": "Corporate Ethics",
+          "name": "Dr. Sarah Chen",
+          "role": "ESG Consultant",
           "rating": 5,
-          "statement": "Exemplary social responsibility programs and stakeholder engagement.",
+          "statement": "Exceptional commitment to renewable energy initiatives and carbon reduction targets. Amazon's Climate Pledge represents industry leadership in environmental responsibility.",
           "verified": true,
-          "organization": "Business Ethics Institute"
+          "organization": "ESG Advisory Partners",
+          "linkedinUrl": "https://linkedin.com/in/sarah-chen-esg",
+          "expertise": ["ESG Assessment", "Climate Strategy", "Renewable Energy"],
+          "yearsExperience": 12
+        },
+        {
+          "name": "Mike Rodriguez",
+          "role": "Sustainability Engineer",
+          "rating": 4,
+          "statement": "Strong governance practices with transparent reporting and stakeholder engagement. The company shows measurable progress in operational efficiency and waste reduction.",
+          "verified": true,
+          "organization": "Green Tech Solutions",
+          "githubUrl": "https://github.com/mrodriguez-dev",
+          "expertise": ["Sustainability Engineering", "Carbon Footprint Analysis", "Green Technology"],
+          "yearsExperience": 8
+        },
+        {
+          "name": "Prof. Amanda Kim",
+          "role": "Environmental Researcher",
+          "rating": 5,
+          "statement": "Comprehensive environmental management system with measurable impact. Amazon's investment in renewable energy infrastructure sets a benchmark for the industry.",
+          "verified": true,
+          "organization": "Environmental Research Institute",
+          "websiteUrl": "https://amanda-kim.org",
+          "expertise": ["Environmental Impact Assessment", "Sustainability Research", "Climate Policy"],
+          "yearsExperience": 15
+        },
+        {
+          "name": "James Wilson",
+          "role": "Community Advocate",
+          "rating": 3,
+          "statement": "Good progress on diversity and inclusion, but room for improvement in supply chain ethics. Community engagement initiatives show promise but need broader implementation.",
+          "verified": true,
+          "organization": "Social Impact Alliance",
+          "linkedinUrl": "https://linkedin.com/in/james-wilson-advocacy",
+          "expertise": ["Community Relations", "Social Impact", "Supply Chain Ethics"],
+          "yearsExperience": 10
+        },
+        {
+          "name": "Lisa Zhang",
+          "role": "Impact Investor",
+          "rating": 4,
+          "statement": "Leadership in industry sustainability practices with innovative green technologies. Strong financial performance aligned with ESG principles demonstrates long-term value creation.",
+          "verified": true,
+          "organization": "Sustainable Capital Partners",
+          "githubUrl": "https://github.com/lzhang-impact",
+          "expertise": ["Impact Investing", "ESG Integration", "Sustainable Finance"],
+          "yearsExperience": 11
+        },
+        {
+          "name": "Dr. Robert Martinez",
+          "role": "Climate Policy Expert",
+          "rating": 5,
+          "statement": "Outstanding climate action strategy with science-based targets. Amazon's commitment to net-zero emissions by 2040 is backed by substantial investments and concrete milestones.",
+          "verified": true,
+          "organization": "Climate Action Institute",
+          "linkedinUrl": "https://linkedin.com/in/robert-martinez-climate",
+          "websiteUrl": "https://robert-martinez-climate.org",
+          "expertise": ["Climate Policy", "Carbon Management", "Environmental Strategy"],
+          "yearsExperience": 18
+        },
+        {
+          "name": "Jennifer Park",
+          "role": "Corporate Governance Analyst",
+          "rating": 4,
+          "statement": "Strong board independence and transparent governance practices. Executive compensation alignment with ESG performance metrics demonstrates commitment to sustainable business practices.",
+          "verified": true,
+          "organization": "Governance Research Group",
+          "linkedinUrl": "https://linkedin.com/in/jennifer-park-governance",
+          "expertise": ["Corporate Governance", "Board Assessment", "Executive Compensation"],
+          "yearsExperience": 9
+        },
+        {
+          "name": "David Thompson",
+          "role": "Supply Chain Ethics Expert",
+          "rating": 3,
+          "statement": "Solid progress in supply chain transparency but challenges remain in ensuring ethical practices across all suppliers. The company's supplier code of conduct is comprehensive but enforcement could be strengthened.",
+          "verified": true,
+          "organization": "Ethical Supply Chain Initiative",
+          "websiteUrl": "https://david-thompson-ethics.com",
+          "expertise": ["Supply Chain Ethics", "Supplier Assessment", "Labor Standards"],
+          "yearsExperience": 13
         }
       ]
     },
@@ -70,17 +135,59 @@
           "name": "Dr. Lisa Park",
           "role": "Climate Policy Expert",
           "rating": 5,
-          "statement": "Outstanding leadership in carbon neutrality and renewable energy adoption.",
+          "statement": "Outstanding leadership in carbon neutrality and renewable energy adoption. Google's achievement of carbon neutrality since 2007 and commitment to 24/7 renewable energy by 2030 sets the gold standard.",
           "verified": true,
-          "organization": "Climate Action Network"
+          "organization": "Climate Action Network",
+          "linkedinUrl": "https://linkedin.com/in/lisa-park-climate",
+          "websiteUrl": "https://lisa-park-climate.org",
+          "expertise": ["Climate Policy", "Renewable Energy", "Carbon Neutrality"],
+          "yearsExperience": 16
         },
         {
           "name": "James Rodriguez",
           "role": "Tech Sustainability Analyst",
           "rating": 5,
-          "statement": "Pioneering sustainable technology practices and data center efficiency.",
+          "statement": "Pioneering sustainable technology practices and data center efficiency. Google's AI-driven energy optimization has reduced cooling costs by 40% industry-wide.",
           "verified": true,
-          "organization": "Tech for Good Alliance"
+          "organization": "Tech for Good Alliance",
+          "githubUrl": "https://github.com/james-rodriguez-tech",
+          "linkedinUrl": "https://linkedin.com/in/james-rodriguez-sustainability",
+          "expertise": ["Tech Sustainability", "Data Center Efficiency", "AI for Climate"],
+          "yearsExperience": 12
+        },
+        {
+          "name": "Maria Santos",
+          "role": "Digital Rights Advocate",
+          "rating": 4,
+          "statement": "Strong commitment to user privacy and data protection, though ongoing challenges in content moderation and platform governance require continued attention.",
+          "verified": true,
+          "organization": "Digital Rights Foundation",
+          "websiteUrl": "https://maria-santos-digital.org",
+          "expertise": ["Digital Rights", "Privacy Policy", "Platform Governance"],
+          "yearsExperience": 9
+        },
+        {
+          "name": "Dr. Kevin Wu",
+          "role": "Environmental Technology Researcher",
+          "rating": 5,
+          "statement": "Revolutionary approach to sustainable computing and circular economy principles. Google's commitment to using recycled materials in hardware demonstrates true environmental leadership.",
+          "verified": true,
+          "organization": "Green Computing Institute",
+          "linkedinUrl": "https://linkedin.com/in/kevin-wu-greentech",
+          "githubUrl": "https://github.com/kevin-wu-research",
+          "expertise": ["Green Computing", "Circular Economy", "Sustainable Hardware"],
+          "yearsExperience": 14
+        },
+        {
+          "name": "Rebecca Johnson",
+          "role": "Corporate Transparency Analyst",
+          "rating": 4,
+          "statement": "Excellent transparency in environmental reporting and sustainability metrics. The company's detailed carbon footprint disclosure and third-party verification processes are exemplary.",
+          "verified": true,
+          "organization": "Transparency International Tech",
+          "linkedinUrl": "https://linkedin.com/in/rebecca-johnson-transparency",
+          "expertise": ["Corporate Transparency", "ESG Reporting", "Stakeholder Engagement"],
+          "yearsExperience": 11
         }
       ]
     },
@@ -102,7 +209,77 @@
       "issuerId": "corp-responsibility-institute",
       "issuerIdType": "URL",
       "createdAt": "2024-01-25T09:45:00Z",
-      "lastUpdatedAt": "2024-01-25T09:45:00Z"
+      "lastUpdatedAt": "2024-01-25T09:45:00Z",
+      "validators": [
+        {
+          "name": "Dr. Elena Vasquez",
+          "role": "AI Ethics Researcher",
+          "rating": 5,
+          "statement": "Leading in responsible AI development and carbon negative commitment by 2030. Microsoft's AI for Good initiatives demonstrate genuine commitment to using technology for positive social impact.",
+          "verified": true,
+          "organization": "AI Ethics Institute",
+          "linkedinUrl": "https://linkedin.com/in/elena-vasquez-ai-ethics",
+          "websiteUrl": "https://elena-vasquez-ai.org",
+          "expertise": ["AI Ethics", "Responsible AI", "Technology Policy"],
+          "yearsExperience": 13
+        },
+        {
+          "name": "Thomas Anderson",
+          "role": "Carbon Management Specialist",
+          "rating": 5,
+          "statement": "Exceptional commitment to carbon negative goals with comprehensive carbon removal investments. Microsoft's climate fund and direct air capture initiatives are industry-leading.",
+          "verified": true,
+          "organization": "Carbon Management Solutions",
+          "linkedinUrl": "https://linkedin.com/in/thomas-anderson-carbon",
+          "expertise": ["Carbon Management", "Climate Finance", "Direct Air Capture"],
+          "yearsExperience": 10
+        },
+        {
+          "name": "Sarah Mitchell",
+          "role": "Diversity & Inclusion Expert",
+          "rating": 4,
+          "statement": "Strong governance practices and diversity initiatives across global operations. Microsoft's transparency in diversity reporting and commitment to inclusive hiring practices sets a positive example.",
+          "verified": true,
+          "organization": "Inclusive Tech Alliance",
+          "linkedinUrl": "https://linkedin.com/in/sarah-mitchell-inclusion",
+          "expertise": ["Diversity & Inclusion", "Workplace Equity", "Inclusive Leadership"],
+          "yearsExperience": 12
+        },
+        {
+          "name": "Dr. Chen Liu",
+          "role": "Sustainable Technology Analyst",
+          "rating": 4,
+          "statement": "Innovative approach to sustainable cloud computing and circular economy principles. Azure's renewable energy commitments and hardware recycling programs demonstrate comprehensive environmental stewardship.",
+          "verified": true,
+          "organization": "Sustainable Computing Research",
+          "githubUrl": "https://github.com/chen-liu-sustainable",
+          "linkedinUrl": "https://linkedin.com/in/chen-liu-sustainability",
+          "expertise": ["Sustainable Computing", "Cloud Sustainability", "Circular Economy"],
+          "yearsExperience": 15
+        },
+        {
+          "name": "Rachel Green",
+          "role": "Corporate Governance Analyst",
+          "rating": 4,
+          "statement": "Excellent board governance structure with strong ESG oversight. Microsoft's integration of sustainability metrics into executive compensation demonstrates authentic commitment to long-term value creation.",
+          "verified": true,
+          "organization": "Governance Excellence Institute",
+          "linkedinUrl": "https://linkedin.com/in/rachel-green-governance",
+          "expertise": ["Corporate Governance", "ESG Integration", "Executive Compensation"],
+          "yearsExperience": 11
+        },
+        {
+          "name": "Marcus Johnson",
+          "role": "Digital Accessibility Advocate",
+          "rating": 5,
+          "statement": "Outstanding commitment to digital accessibility and inclusive design. Microsoft's accessibility features and assistive technology development have transformed opportunities for people with disabilities globally.",
+          "verified": true,
+          "organization": "Digital Accessibility Foundation",
+          "websiteUrl": "https://marcus-johnson-accessibility.org",
+          "expertise": ["Digital Accessibility", "Inclusive Design", "Assistive Technology"],
+          "yearsExperience": 14
+        }
+      ]
     },
     {
       "id": 4,
@@ -122,7 +299,66 @@
       "issuerId": "tech-sustainability-council",
       "issuerIdType": "URL",
       "createdAt": "2024-02-01T11:20:00Z",
-      "lastUpdatedAt": "2024-02-01T11:20:00Z"
+      "lastUpdatedAt": "2024-02-01T11:20:00Z",
+      "validators": [
+        {
+          "name": "Dr. Priya Sharma",
+          "role": "Supply Chain Sustainability Expert",
+          "rating": 4,
+          "statement": "Strong environmental commitment with carbon neutral products and supply chain by 2030. Apple's responsible sourcing practices and supplier clean energy program demonstrate industry leadership.",
+          "verified": true,
+          "organization": "Sustainable Supply Chain Institute",
+          "linkedinUrl": "https://linkedin.com/in/priya-sharma-supply-chain",
+          "expertise": ["Supply Chain Sustainability", "Responsible Sourcing", "Clean Energy"],
+          "yearsExperience": 16
+        },
+        {
+          "name": "Alex Rivera",
+          "role": "Privacy Technology Analyst",
+          "rating": 5,
+          "statement": "Excellent privacy protection and responsible sourcing practices. Apple's App Tracking Transparency and privacy-by-design approach sets the gold standard for user data protection.",
+          "verified": true,
+          "organization": "Privacy Tech Research",
+          "githubUrl": "https://github.com/alex-rivera-privacy",
+          "websiteUrl": "https://alex-rivera-privacy.com",
+          "expertise": ["Privacy Technology", "Data Protection", "User Rights"],
+          "yearsExperience": 11
+        },
+        {
+          "name": "Emily Watson",
+          "role": "Circular Economy Specialist",
+          "rating": 5,
+          "statement": "Revolutionary approach to product lifecycle management and material recovery. Apple's closed-loop supply chain and Daisy recycling robot demonstrate true circular economy principles.",
+          "verified": true,
+          "organization": "Circular Economy Foundation",
+          "linkedinUrl": "https://linkedin.com/in/emily-watson-circular",
+          "expertise": ["Circular Economy", "Product Lifecycle", "Material Recovery"],
+          "yearsExperience": 13
+        },
+        {
+          "name": "Dr. Hassan Ali",
+          "role": "Renewable Energy Expert",
+          "rating": 4,
+          "statement": "Impressive renewable energy transition with 100% clean energy for corporate operations. Apple's supplier clean energy commitments are driving industry-wide transformation.",
+          "verified": true,
+          "organization": "Renewable Energy Institute",
+          "linkedinUrl": "https://linkedin.com/in/hassan-ali-renewable",
+          "websiteUrl": "https://hassan-ali-energy.org",
+          "expertise": ["Renewable Energy", "Clean Technology", "Energy Transition"],
+          "yearsExperience": 18
+        },
+        {
+          "name": "Sofia Gonzalez",
+          "role": "Corporate Transparency Advocate",
+          "rating": 3,
+          "statement": "Good progress in environmental transparency but could improve disclosure of social impact metrics. Apple's environmental progress reports are comprehensive, but labor practices transparency needs enhancement.",
+          "verified": true,
+          "organization": "Corporate Accountability Network",
+          "linkedinUrl": "https://linkedin.com/in/sofia-gonzalez-transparency",
+          "expertise": ["Corporate Transparency", "Social Impact", "Labor Rights"],
+          "yearsExperience": 9
+        }
+      ]
     },
     {
       "id": 5,

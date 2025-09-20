@@ -23,7 +23,7 @@ const CompanyDetailsPage: React.FC = () => {
   const navigate = useNavigate();
   const claimId = id ? parseInt(id, 10) : undefined;
 
-  const { claim, error, refetch, isLoading, isError } = useClaim(claimId);
+  const { claim, esgMetrics, validationMetrics, error, refetch, isLoading, isError, hasESGData } = useClaim(claimId);
 
   const handleBack = () => {
     navigate(-1);
@@ -165,7 +165,12 @@ const CompanyDetailsPage: React.FC = () => {
 
 
       {/* Company Details */}
-      <CompanyDetails claim={claim} />
+      <CompanyDetails 
+        claim={claim} 
+        esgMetrics={esgMetrics}
+        validationMetrics={validationMetrics}
+        hasESGData={hasESGData}
+      />
     </Box>
   );
 };

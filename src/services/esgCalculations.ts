@@ -340,7 +340,6 @@ export class ESGCalculationEngine {
       // Add additional validators with enhanced info
       if (claim.validators) {
         claim.validators.forEach((validator, index) => {
-          const socialLinks = this.generateSocialLinks(validator.name);
           validationHistory.push({
             id: `validator-${claim.id}-${index}`,
             validatorName: validator.name,
@@ -350,9 +349,11 @@ export class ESGCalculationEngine {
             statement: validator.statement,
             verified: validator.verified,
             timestamp: claim.createdAt,
-            ...socialLinks,
-            expertise: this.generateExpertise(validator.role),
-            yearsExperience: Math.floor(Math.random() * 15) + 3
+            linkedinUrl: (validator as any).linkedinUrl,
+            twitterUrl: (validator as any).twitterUrl,
+            websiteUrl: (validator as any).websiteUrl || (validator as any).githubUrl,
+            expertise: (validator as any).expertise || this.generateExpertise(validator.role),
+            yearsExperience: (validator as any).yearsExperience || Math.floor(Math.random() * 15) + 3
           });
         });
       }

@@ -29,7 +29,6 @@ import {
   Twitter,
   Language,
   Business,
-  Email,
 } from '@mui/icons-material';
 import type { ValidationMetrics } from '../../services/esgCalculations';
 
@@ -96,16 +95,6 @@ const ValidationEndorsements: React.FC<ValidationEndorsementsProps> = ({
     return 'grey.600'; // Softer than red
   };
 
-  // Get social media icon
-  const getSocialIcon = (type: 'linkedin' | 'twitter' | 'website' | 'email') => {
-    switch (type) {
-      case 'linkedin': return <LinkedIn fontSize="small" />;
-      case 'twitter': return <Twitter fontSize="small" />;
-      case 'website': return <Language fontSize="small" />;
-      case 'email': return <Email fontSize="small" />;
-      default: return null;
-    }
-  };
 
   if (totalValidations === 0) {
     return (
