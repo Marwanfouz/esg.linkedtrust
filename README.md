@@ -168,18 +168,6 @@ The application is ready for backend integration:
 - **Data Visualization**: Charts and graphs for ESG trends
 - **Export Features**: PDF reports and data export
 
-## 🤝 Contributing
 
-1. Follow the existing code structure and naming conventions
-2. Use TypeScript for all new components
-3. Follow Material-UI design patterns
-4. Add proper error handling and loading states
-5. Include responsive design considerations
 
-## 📝 License
-
-This project is part of the LinkedTrust platform for ESG transparency and accountability.
-
----
-
-**LinkedTrust Platform** - Bringing transparency to corporate ESG performance through verified attestations and community-driven ratings.
+.
