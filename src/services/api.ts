@@ -19,9 +19,7 @@ export const apiService = {
   getCompanyClaims: (subject: string) => apiClient.get<Claim[]>(`/api/v4/claims?subject=${encodeURIComponent(subject)}`),
   getRatedClaims: () => apiClient.get<Claim[]>('/api/v4/claims?claim=rated'),
   
-  // Legacy endpoints for backward compatibility
-  getLegacyClaims: () => apiClient.get<Claim[]>('/api/claim'),
-  getLegacyClaimById: (id: number) => apiClient.get<Claim>(`/api/claim/${id}`),
+
   
   // Nodes endpoints
   getNodes: () => apiClient.get<Node[]>('/nodes'),
