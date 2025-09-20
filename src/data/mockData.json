@@ -12,8 +12,8 @@
       "author": "ESG Rating Agency",
       "curator": "LinkedTrust",
       "aspect": "esg-overall",
-      "score": 0.56,
-      "stars": 4,
+      "score": 0.282,
+      "stars": 3,
       "confidence": 0.85,
       "issuerId": "esg-rating-agency",
       "issuerIdType": "URL",
@@ -23,7 +23,7 @@
         {
           "name": "Dr. Sarah Chen",
           "role": "ESG Consultant",
-          "rating": 5,
+          "rating": 4,
           "statement": "Exceptional commitment to renewable energy initiatives and carbon reduction targets. Amazon's Climate Pledge represents industry leadership in environmental responsibility.",
           "verified": true,
           "organization": "ESG Advisory Partners",
@@ -113,6 +113,105 @@
     },
     {
       "id": 2,
+      "subject": "Amazon Inc. (AMZN)",
+      "claim": "rated",
+      "statement": "Environmental performance shows moderate progress with renewable energy commitments, but significant challenges remain in carbon emissions reduction and waste management across global operations.",
+      "effectiveDate": "2024-01-15T00:00:00Z",
+      "sourceURI": "https://environmental-rating.com/amazon-2024",
+      "howKnown": "RESEARCH",
+      "dateObserved": "2024-01-10T00:00:00Z",
+      "author": "Environmental Assessment Institute",
+      "curator": "LinkedTrust",
+      "aspect": "environmental",
+      "score": 0.0,
+      "stars": 3,
+      "confidence": 0.82,
+      "issuerId": "environmental-assessment",
+      "issuerIdType": "URL",
+      "createdAt": "2024-01-15T11:00:00Z",
+      "lastUpdatedAt": "2024-01-15T11:00:00Z",
+      "validators": [
+        {
+          "name": "Dr. Maria Santos",
+          "role": "Environmental Analyst",
+          "rating": 3,
+          "statement": "Amazon's environmental initiatives are progressing but face significant scale challenges. Carbon neutrality goals are ambitious but implementation varies across business units.",
+          "verified": true,
+          "organization": "Climate Impact Research",
+          "linkedinUrl": "https://linkedin.com/in/maria-santos-climate",
+          "expertise": ["Carbon Footprint", "Environmental Impact", "Climate Strategy"],
+          "yearsExperience": 14
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "subject": "Amazon Inc. (AMZN)",
+      "claim": "rated",
+      "statement": "Excellent social performance with strong diversity initiatives, competitive employee benefits, and positive community impact programs. Leadership in workplace safety and employee development.",
+      "effectiveDate": "2024-01-15T00:00:00Z",
+      "sourceURI": "https://social-impact-rating.com/amazon-2024",
+      "howKnown": "RESEARCH",
+      "dateObserved": "2024-01-10T00:00:00Z",
+      "author": "Social Impact Assessment Group",
+      "curator": "LinkedTrust",
+      "aspect": "social",
+      "score": 0.6,
+      "stars": 4,
+      "confidence": 0.88,
+      "issuerId": "social-impact-assessment",
+      "issuerIdType": "URL",
+      "createdAt": "2024-01-15T11:30:00Z",
+      "lastUpdatedAt": "2024-01-15T11:30:00Z",
+      "validators": [
+        {
+          "name": "Jennifer Park",
+          "role": "Social Impact Specialist",
+          "rating": 4,
+          "statement": "Outstanding employee programs and community engagement. Amazon's investment in workforce development and local communities demonstrates strong social responsibility.",
+          "verified": true,
+          "organization": "Social Responsibility Institute",
+          "linkedinUrl": "https://linkedin.com/in/jennifer-park-social",
+          "expertise": ["Employee Relations", "Community Development", "Social Impact"],
+          "yearsExperience": 11
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "subject": "Amazon Inc. (AMZN)",
+      "claim": "rated",
+      "statement": "Good governance practices with transparent reporting and stakeholder engagement. Board independence and executive accountability show positive trends, though some areas need improvement.",
+      "effectiveDate": "2024-01-15T00:00:00Z",
+      "sourceURI": "https://governance-rating.com/amazon-2024",
+      "howKnown": "RESEARCH",
+      "dateObserved": "2024-01-10T00:00:00Z",
+      "author": "Corporate Governance Institute",
+      "curator": "LinkedTrust",
+      "aspect": "governance",
+      "score": 0.34,
+      "stars": 3,
+      "confidence": 0.80,
+      "issuerId": "corporate-governance",
+      "issuerIdType": "URL",
+      "createdAt": "2024-01-15T12:00:00Z",
+      "lastUpdatedAt": "2024-01-15T12:00:00Z",
+      "validators": [
+        {
+          "name": "Robert Martinez",
+          "role": "Governance Analyst",
+          "rating": 3,
+          "statement": "Solid governance framework with room for improvement in board diversity and executive compensation alignment. Transparency efforts are commendable but could be enhanced.",
+          "verified": true,
+          "organization": "Governance Excellence Group",
+          "linkedinUrl": "https://linkedin.com/in/robert-martinez-governance",
+          "expertise": ["Corporate Governance", "Board Assessment", "Risk Management"],
+          "yearsExperience": 16
+        }
+      ]
+    },
+    {
+      "id": 5,
       "subject": "Google LLC (GOOGL)",
       "claim": "rated",
       "statement": "Exceptional environmental leadership with carbon neutrality achieved since 2007. Strong commitment to renewable energy and sustainable technology development.",
@@ -192,7 +291,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": 6,
       "subject": "Microsoft Corporation (MSFT)",
       "claim": "rated",
       "statement": "Leading in responsible AI development and carbon negative commitment by 2030. Strong governance practices and diversity initiatives across global operations.",
@@ -282,7 +381,7 @@
       ]
     },
     {
-      "id": 4,
+      "id": 7,
       "subject": "Apple Inc. (AAPL)",
       "claim": "rated",
       "statement": "Strong environmental commitment with carbon neutral products and supply chain by 2030. Excellent privacy protection and responsible sourcing practices.",
@@ -361,7 +460,7 @@
       ]
     },
     {
-      "id": 5,
+      "id": 8,
       "subject": "Tesla Inc. (TSLA)",
       "claim": "rated",
       "statement": "Revolutionary impact on sustainable transportation and energy storage. Leading the transition to sustainable energy with innovative electric vehicles and solar technology.",
@@ -381,7 +480,7 @@
       "lastUpdatedAt": "2024-02-05T16:30:00Z"
     },
     {
-      "id": 6,
+      "id": 9,
       "subject": "Netflix Inc. (NFLX)",
       "claim": "rated",
       "statement": "Growing commitment to sustainability with renewable energy initiatives. Strong content diversity and inclusion practices, though governance could be improved.",
@@ -401,7 +500,7 @@
       "lastUpdatedAt": "2024-02-10T13:45:00Z"
     },
     {
-      "id": 7,
+      "id": 10,
       "subject": "Meta Platforms Inc. (META)",
       "claim": "rated",
       "statement": "Significant investments in renewable energy and data center efficiency. However, challenges remain in content moderation and data privacy governance.",
@@ -421,7 +520,7 @@
       "lastUpdatedAt": "2024-02-15T10:15:00Z"
     },
     {
-      "id": 8,
+      "id": 11,
       "subject": "NVIDIA Corporation (NVDA)",
       "claim": "rated",
       "statement": "Leading in AI technology development with strong environmental commitments. Excellent innovation in sustainable computing and energy-efficient chip design.",
