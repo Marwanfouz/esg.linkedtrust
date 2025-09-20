@@ -77,14 +77,36 @@ const ESGAssessment: React.FC<ESGAssessmentProps> = ({
   };
 
   return (
-    <Paper elevation={2} sx={{ p: 3, mb: 3 }}>
-      <Typography variant="h5" gutterBottom sx={{ 
-        fontWeight: 600, 
+    <Paper elevation={2} sx={{ 
+      p: 4, 
+      mb: 4, 
+      background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+      border: '1px solid',
+      borderColor: 'grey.100',
+      position: 'relative',
+      overflow: 'hidden',
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: '4px',
+        background: 'linear-gradient(90deg, #2563eb 0%, #10b981 50%, #f59e0b 100%)',
+      }
+    }}>
+      <Typography variant="h4" gutterBottom sx={{ 
+        fontWeight: 700, 
         display: 'flex', 
         alignItems: 'center', 
-        gap: 1 
+        gap: 2,
+        mb: 3,
+        background: 'linear-gradient(135deg, #2563eb 0%, #10b981 100%)',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        backgroundClip: 'text'
       }}>
-        <Assessment color="primary" />
+        <Assessment sx={{ fontSize: 36, color: 'primary.main' }} />
         ESG Assessment
       </Typography>
       
@@ -95,36 +117,73 @@ const ESGAssessment: React.FC<ESGAssessmentProps> = ({
       )}
 
       {/* Overall Score Card */}
-      <Card sx={{ mb: 3, bgcolor: 'primary.light' }}>
-        <CardContent>
-          <Grid container spacing={3} alignItems="center">
+      <Card sx={{ 
+        mb: 4, 
+        background: `linear-gradient(135deg, ${getScoreColor(overallPercentage)} 0%, rgba(255,255,255,0.95) 100%)`,
+        border: '2px solid',
+        borderColor: getScoreColor(overallPercentage),
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        <CardContent sx={{ p: 4 }}>
+          <Grid container spacing={4} alignItems="center">
             <Grid item xs={12} md={6}>
-              <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, color: 'primary.dark' }}>
+              <Typography variant="h5" gutterBottom sx={{ 
+                fontWeight: 700, 
+                color: 'text.primary',
+                mb: 3
+              }}>
                 Overall ESG Score
               </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                <Typography variant="h3" sx={{ 
-                  fontWeight: 700, 
-                  color: getScoreColor(overallPercentage) 
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mb: 3 }}>
+                <Box sx={{ 
+                  position: 'relative',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
                 }}>
-                  {Math.round(overallPercentage)}%
-                </Typography>
-                <Chip 
-                  label={`Grade ${overallGrade}`} 
-                  color={getGradeColor(overallGrade)}
-                  sx={{ fontSize: '1rem', fontWeight: 600, height: 32 }}
-                />
+                  <Typography variant="h1" sx={{ 
+                    fontWeight: 800, 
+                    color: getScoreColor(overallPercentage),
+                    textShadow: '2px 2px 4px rgba(0,0,0,0.1)',
+                    fontSize: '4rem'
+                  }}>
+                    {Math.round(overallPercentage)}
+                  </Typography>
+                  <Typography variant="h4" sx={{ 
+                    fontWeight: 600, 
+                    color: 'text.secondary',
+                    ml: 0.5
+                  }}>
+                    %
+                  </Typography>
+                </Box>
+                <Box>
+                  <Chip 
+                    label={`Grade ${overallGrade}`} 
+                    color={getGradeColor(overallGrade)}
+                    sx={{ 
+                      fontSize: '1.1rem', 
+                      fontWeight: 700, 
+                      height: 40,
+                      px: 2,
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+                    }}
+                  />
+                </Box>
               </Box>
               <LinearProgress
                 variant="determinate"
                 value={overallPercentage}
                 sx={{
-                  height: 10,
-                  borderRadius: 5,
-                  backgroundColor: 'grey.200',
+                  height: 12,
+                  borderRadius: 6,
+                  backgroundColor: 'rgba(0,0,0,0.1)',
+                  boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)',
                   '& .MuiLinearProgress-bar': {
-                    borderRadius: 5,
-                    backgroundColor: getScoreColor(overallPercentage),
+                    borderRadius: 6,
+                    background: `linear-gradient(90deg, ${getScoreColor(overallPercentage)}, ${getScoreColor(overallPercentage)}dd)`,
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
                   },
                 }}
               />
@@ -164,7 +223,12 @@ const ESGAssessment: React.FC<ESGAssessmentProps> = ({
       </Card>
 
       {/* ESG Pillar Breakdown */}
-      <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, mb: 2 }}>
+      <Typography variant="h5" gutterBottom sx={{ 
+        fontWeight: 700, 
+        mb: 4,
+        textAlign: 'center',
+        color: 'text.primary'
+      }}>
         ESG Pillar Breakdown
       </Typography>
 
@@ -173,10 +237,18 @@ const ESGAssessment: React.FC<ESGAssessmentProps> = ({
         <Grid item xs={12} md={4}>
           <Card sx={{ 
             height: '100%', 
-            border: '2px solid', 
+            border: '3px solid', 
             borderColor: getScoreColor(environmentalScore),
+            borderRadius: 4,
             position: 'relative',
-            overflow: 'visible'
+            overflow: 'visible',
+            background: `linear-gradient(135deg, ${getScoreColor(environmentalScore)}08 0%, #ffffff 100%)`,
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            '&:hover': {
+              transform: 'translateY(-8px) scale(1.02)',
+              boxShadow: `0 20px 40px rgba(0,0,0,0.15), 0 0 0 1px ${getScoreColor(environmentalScore)}`,
+              borderColor: getScoreColor(environmentalScore),
+            }
           }}>
             <CardContent sx={{ pb: 1 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
@@ -199,13 +271,15 @@ const ESGAssessment: React.FC<ESGAssessmentProps> = ({
               </Box>
               
               <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1, mb: 2 }}>
-                <Typography variant="h3" sx={{ 
-                  fontWeight: 700, 
-                  color: getScoreColor(environmentalScore)
+                <Typography variant="h2" sx={{ 
+                  fontWeight: 800, 
+                  color: getScoreColor(environmentalScore),
+                  textShadow: '1px 1px 2px rgba(0,0,0,0.1)',
+                  fontSize: '3rem'
                 }}>
                   {Math.round(environmentalScore)}
                 </Typography>
-                <Typography variant="h6" sx={{ color: 'text.secondary' }}>
+                <Typography variant="h5" sx={{ color: 'text.secondary', fontWeight: 500 }}>
                   /100
                 </Typography>
                 <Box sx={{ ml: 'auto' }}>
