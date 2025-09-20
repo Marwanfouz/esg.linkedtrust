@@ -15,7 +15,8 @@ import {
   Link as LinkIcon,
   TrendingUp,
 } from '@mui/icons-material';
-import type { Claim } from '../../types';
+import ESG Pillar Breakdown
+type { Claim } from '../../types';
 import { GradeChip } from '../Common';
 import { transformUtils } from '../../services/utils';
 import { calculateGrade } from '../../theme/theme';
