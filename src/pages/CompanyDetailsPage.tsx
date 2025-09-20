@@ -163,6 +163,7 @@ const CompanyDetailsPage: React.FC = () => {
         </Typography>
       </Alert>
 
+
       {/* Company Details */}
       <CompanyDetails claim={claim} />
     </Box>

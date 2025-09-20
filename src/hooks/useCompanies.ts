@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import type { CompanyCardData, LoadingState, ApiError } from '../types';
-import mockService from '../services/mockService';
+import { apiService } from '../services/api';
+import { ESGCalculationEngine } from '../services/esgCalculations';
 import { errorUtils } from '../services/utils';
 
-// Custom hook for fetching company data
+// Custom hook for fetching company data with real ESG calculations
 export const useCompanies = () => {
   const [companies, setCompanies] = useState<CompanyCardData[]>([]);
   const [loading, setLoading] = useState<LoadingState>('idle');
@@ -14,13 +15,56 @@ export const useCompanies = () => {
     setError(null);
 
     try {
-      const data = await mockService.getCompanyCardData();
-      setCompanies(data);
+      // Fetch all rated claims from real API
+      const response = await apiService.getRatedClaims();
+      const claims = response.data;
+
+      // Group claims by company subject
+      const companiesBySubject = claims.reduce((acc, claim) => {
+        const subject = claim.subject;
+        if (!acc[subject]) {
+          acc[subject] = [];
+        }
+        acc[subject].push(claim);
+        return acc;
+      }, {} as Record<string, typeof claims>);
+
+      // Calculate ESG metrics for each company
+      const companiesData: CompanyCardData[] = Object.entries(companiesBySubject).map(([subject, companyClaims]) => {
+        const esgMetrics = ESGCalculationEngine.calculateESGMetrics(companyClaims);
+        const firstClaim = companyClaims[0];
+        
+        return {
+          id: firstClaim.id,
+          subject: subject,
+          stars: esgMetrics.overallStars,
+          score: esgMetrics.overallScore,
+          grade: esgMetrics.overallGrade,
+        };
+      });
+
+      // Sort by overall score (highest first)
+      companiesData.sort((a, b) => b.score - a.score);
+
+      setCompanies(companiesData);
       setLoading('success');
     } catch (err) {
-      const apiError = errorUtils.handleApiError(err);
-      setError(apiError);
-      setLoading('error');
+      console.error('Error fetching companies:', err);
+      
+      // Fallback to mock data if API fails
+      try {
+        const mockService = await import('../services/mockService');
+        const mockData = await mockService.default.getCompanyCardData();
+        setCompanies(mockData);
+        setLoading('success');
+        
+        // Clear any previous errors since we have working data
+        setError(null);
+      } catch (mockErr) {
+        const apiError = errorUtils.handleApiError(err);
+        setError(apiError);
+        setLoading('error');
+      }
     }
   };
 

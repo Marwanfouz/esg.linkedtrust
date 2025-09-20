@@ -2,3 +2,5 @@
 export { default as CompanyCard } from './CompanyCard';
 export { default as CompanyGrid } from './CompanyGrid';
 export { default as CompanyDetails } from './CompanyDetails';
+export { default as ValidationEndorsements } from './ValidationEndorsements';
+export { default as ESGAssessment } from './ESGAssessment';

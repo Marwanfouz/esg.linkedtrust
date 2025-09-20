@@ -6,7 +6,6 @@ import {
   Grid,
   Chip,
   Button,
-  Alert,
 } from '@mui/material';
 import {
   TrendingUp,
@@ -59,6 +58,7 @@ const Dashboard: React.FC = () => {
         <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 3 }}>
           Transparency and accountability in corporate ESG performance
         </Typography>
+
 
         {/* Stats Cards */}
         <Grid container spacing={3} sx={{ mb: 4 }}>
