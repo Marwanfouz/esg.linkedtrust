@@ -61,11 +61,11 @@ const ScanProductPage: React.FC = () => {
       {/* Header Section */}
       <Box sx={{ mb: 4, textAlign: 'center' }}>
         <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 600 }}>
-          Product Scanning
+          Scan Products
         </Typography>
         <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 4, maxWidth: 600, mx: 'auto' }}>
-          Scan, identify, and analyze products to discover their ESG ratings, sustainability metrics, 
-          and supply chain transparency information in real-time.
+          Scan QR codes, barcodes, or upload product images to instantly discover ESG ratings, 
+          sustainability metrics, and supply chain transparency information.
         </Typography>
 
         {/* Status Alert */}

@@ -60,10 +60,10 @@ const CompaniesPage: React.FC = () => {
       {/* Header Section */}
       <Box sx={{ mb: 4 }}>
         <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 600 }}>
-          All Companies
+          Search Companies
         </Typography>
         <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 3 }}>
-          Browse and search through our comprehensive database of ESG-rated companies
+          Search and discover ESG-rated companies with detailed transparency information
         </Typography>
 
         {/* Search and Filters */}
@@ -72,7 +72,7 @@ const CompaniesPage: React.FC = () => {
             <Grid item xs={12} md={8}>
               <TextField
                 fullWidth
-                placeholder="Search companies by name or grade..."
+                placeholder="Search for companies by name, ticker, or ESG grade..."
                 value={searchTerm}
                 onChange={handleSearchChange}
                 InputProps={{

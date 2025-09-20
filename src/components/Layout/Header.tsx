@@ -5,14 +5,11 @@ import {
   Typography,
   Button,
   Box,
-  IconButton,
-  Avatar,
 } from '@mui/material';
 import {
-  AccountCircle,
-  Business,
   Dashboard,
   Search,
+  QrCodeScanner,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -26,8 +23,8 @@ const Header: React.FC<HeaderProps> = () => {
 
   const navigationItems = [
     { label: 'Dashboard', path: '/', icon: <Dashboard /> },
-    { label: 'Companies', path: '/companies', icon: <Business /> },
-    { label: 'Scan Product', path: '/scan', icon: <Search /> },
+    { label: 'Search', path: '/companies', icon: <Search /> },
+    { label: 'Scan Product', path: '/scan', icon: <QrCodeScanner /> },
   ];
 
   const handleNavigation = (path: string) => {
@@ -44,7 +41,7 @@ const Header: React.FC<HeaderProps> = () => {
               width: 32,
               height: 32,
               borderRadius: '50%',
-              background: 'linear-gradient(45deg, #4caf50 30%, #81c784 90%)',
+              background: 'linear-gradient(45deg, #1976d2 30%, #42a5f5 90%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -52,7 +49,7 @@ const Header: React.FC<HeaderProps> = () => {
             }}
           >
             <Typography variant="h6" sx={{ color: 'white', fontWeight: 'bold', fontSize: '1rem' }}>
-              A
+              LT
             </Typography>
           </Box>
           <Typography
@@ -66,7 +63,7 @@ const Header: React.FC<HeaderProps> = () => {
             }}
             onClick={() => handleNavigation('/')}
           >
-            Alonovo
+            LinkedTrust
           </Typography>
         </Box>
 
@@ -95,23 +92,6 @@ const Header: React.FC<HeaderProps> = () => {
           ))}
         </Box>
 
-        {/* User Profile */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <IconButton
-            size="large"
-            edge="end"
-            color="inherit"
-            sx={{
-              '&:hover': {
-                backgroundColor: 'rgba(255,255,255,0.1)',
-              },
-            }}
-          >
-            <Avatar sx={{ width: 32, height: 32, bgcolor: 'secondary.main' }}>
-              <AccountCircle />
-            </Avatar>
-          </IconButton>
-        </Box>
       </Toolbar>
     </AppBar>
   );
