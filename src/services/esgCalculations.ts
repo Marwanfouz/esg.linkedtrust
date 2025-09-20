@@ -276,13 +276,26 @@ export class ESGCalculationEngine {
    * Calculate validation and endorsement metrics
    */
   static calculateValidationMetrics(claims: Claim[]): ValidationMetrics {
-    const claimsWithRatings = claims.filter(claim => 
-      claim.stars !== undefined && 
-      claim.stars !== null && 
-      claim.stars > 0
-    );
+    // Collect all individual ratings from both main claims and validators
+    const allRatings: number[] = [];
+    
+    claims.forEach(claim => {
+      // Add main claim rating if it exists
+      if (claim.stars !== undefined && claim.stars !== null && claim.stars > 0) {
+        allRatings.push(claim.stars);
+      }
+      
+      // Add validator ratings
+      if (claim.validators) {
+        claim.validators.forEach(validator => {
+          if (validator.rating !== undefined && validator.rating !== null && validator.rating > 0) {
+            allRatings.push(validator.rating);
+          }
+        });
+      }
+    });
 
-    if (claimsWithRatings.length === 0) {
+    if (allRatings.length === 0) {
       return {
         totalValidations: 0,
         endorsements: 0,
@@ -295,18 +308,18 @@ export class ESGCalculationEngine {
       };
     }
 
-    const totalValidations = claimsWithRatings.length;
-    const endorsements = claimsWithRatings.filter(claim => (claim.stars || 0) >= 4).length;
-    const rejections = claimsWithRatings.filter(claim => (claim.stars || 0) <= 2).length;
+    const totalValidations = allRatings.length;
+    const endorsements = allRatings.filter(rating => rating >= 4).length;
+    const rejections = allRatings.filter(rating => rating <= 2).length;
     
-    const totalStars = claimsWithRatings.reduce((sum, claim) => sum + (claim.stars || 0), 0);
+    const totalStars = allRatings.reduce((sum, rating) => sum + rating, 0);
     const averageRating = totalStars / totalValidations;
     
     const endorsementRate = (endorsements / totalValidations) * 100;
     
     // Calculate consensus (percentage of ratings within 1 star of average)
-    const consensusCount = claimsWithRatings.filter(claim => 
-      Math.abs((claim.stars || 0) - averageRating) <= 1
+    const consensusCount = allRatings.filter(rating => 
+      Math.abs(rating - averageRating) <= 1
     ).length;
     const consensusPercentage = (consensusCount / totalValidations) * 100;
 
