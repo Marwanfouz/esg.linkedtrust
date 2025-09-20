@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Layout } from './components';
-import { Dashboard } from './pages';
+import { Dashboard, CompanyDetailsPage } from './pages';
 import { Box, Typography } from '@mui/material';
 
 const Companies = () => (
@@ -26,16 +26,6 @@ const ScanProduct = () => (
   </Box>
 );
 
-const CompanyDetails = () => (
-  <Box>
-    <Typography variant="h4" gutterBottom>
-      Company Details
-    </Typography>
-    <Typography variant="body1">
-      Detailed company information will be displayed here
-    </Typography>
-  </Box>
-);
 
 function App() {
   return (
@@ -45,7 +35,7 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/companies" element={<Companies />} />
           <Route path="/scan" element={<ScanProduct />} />
-          <Route path="/company/:id" element={<CompanyDetails />} />
+          <Route path="/company/:id" element={<CompanyDetailsPage />} />
         </Routes>
       </Layout>
     </Router>
