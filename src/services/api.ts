@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Claim, Node } from '../types';
+import type { Claim, Node } from '../types';
 
 // Create axios instance with base configuration
 const apiClient = axios.create({

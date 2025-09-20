@@ -6,7 +6,6 @@ import {
   Grid,
   Chip,
   Rating,
-  Divider,
   Link,
   Avatar,
   Card,
@@ -16,13 +15,12 @@ import {
 import {
   Business,
   DateRange,
-  Person,
   Link as LinkIcon,
   Verified,
   TrendingUp,
   Assessment,
 } from '@mui/icons-material';
-import { Claim } from '../../types';
+import type { Claim } from '../../types';
 import { GradeChip } from '../Common';
 import { transformUtils } from '../../services/utils';
 import { calculateGrade } from '../../theme/theme';

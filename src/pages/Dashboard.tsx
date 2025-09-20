@@ -19,7 +19,7 @@ import { CompanyGrid } from '../components/Company';
 import { LoadingSpinner, ErrorMessage } from '../components/Common';
 
 const Dashboard: React.FC = () => {
-  const { companies, loading, error, refetch, isLoading, isError } = useCompanies();
+  const { companies, error, refetch, isLoading, isError } = useCompanies();
 
   // Calculate dashboard stats
   const totalCompanies = companies.length;

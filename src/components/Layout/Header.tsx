@@ -20,7 +20,7 @@ interface HeaderProps {
   onMenuClick?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
+const Header: React.FC<HeaderProps> = () => {
   const navigate = useNavigate();
   const location = useLocation();
 

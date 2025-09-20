@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { CompanyCardData, LoadingState, ApiError } from '../types';
+import type { CompanyCardData, LoadingState, ApiError } from '../types';
 import mockService from '../services/mockService';
 import { errorUtils } from '../services/utils';
 

@@ -1,69 +1,185 @@
-# React + TypeScript + Vite
+# LinkedTrust ESG Transparency Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React TypeScript application built with Material-UI that displays company ESG ratings and community attestations. This platform provides transparency and accountability in corporate ESG performance.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Dashboard**: Overview of ESG-rated companies with key metrics
+- **Company Profiles**: Detailed ESG information, ratings, and attestations
+- **Search & Filter**: Find companies by name, grade, or other criteria
+- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
+- **Real-time Data**: Mock service ready for backend integration
+- **Modern UI**: Built with Material-UI v6 components and custom theme
 
-## Expanding the ESLint configuration
+## 🛠 Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Framework**: React 18+ with TypeScript
+- **Build Tool**: Vite
+- **UI Library**: Material-UI (MUI) v6
+- **Routing**: React Router v6
+- **State Management**: React Hooks (useState, useReducer)
+- **HTTP Client**: Axios
+- **Icons**: MUI Icons
+- **Styling**: Emotion (CSS-in-JS)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 📦 Installation
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd esg.linkedtrust
+   ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+   ```bash
+   # .env file is already created with:
+   VITE_BACKEND_BASE_URL=http://localhost:9000
+   ```
+
+4. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+5. **Open your browser**
+   Navigate to `http://localhost:5173`
+
+## 🏗 Project Structure
+
+```
+src/
+├── components/          # Reusable UI components
+│   ├── Common/         # Shared components (LoadingSpinner, ErrorMessage, etc.)
+│   ├── Company/        # Company-related components (CompanyCard, CompanyGrid, etc.)
+│   └── Layout/         # Layout components (Header, Layout)
+├── pages/              # Page components
+│   ├── Dashboard.tsx
+│   ├── CompaniesPage.tsx
+│   ├── CompanyDetailsPage.tsx
+│   └── ScanProductPage.tsx
+├── hooks/              # Custom React hooks
+│   ├── useCompanies.ts
+│   ├── useClaim.ts
+│   └── useNotification.ts
+├── services/           # API and utility services
+│   ├── api.ts          # Backend API service
+│   ├── mockService.ts  # Mock data service
+│   └── utils.ts        # Utility functions
+├── data/               # Mock data
+│   └── mockData.json
+├── theme/              # MUI theme configuration
+│   └── theme.ts
+├── types/              # TypeScript type definitions
+│   └── index.ts
+├── App.tsx             # Main App component
+└── main.tsx            # Application entry point
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🎨 Design System
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Colors
+- **Primary**: LinkedIn Blue (#1976d2)
+- **Secondary**: Trust Green (#4caf50)
+- **Background**: Light Gray (#f5f5f5)
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Typography
+- **Font Family**: Roboto, Helvetica, Arial
+- **Headings**: Semi-bold (600) weight
+- **Body Text**: Regular (400) weight
+
+### Components
+- **Cards**: Rounded corners (12px), subtle shadows, hover effects
+- **Buttons**: Rounded corners (8px), no text transform
+- **Chips**: Rounded (16px), medium weight text
+
+## 📊 Data Models
+
+The application uses TypeScript interfaces that match the exact Prisma schema:
+
+### Claim Interface
+```typescript
+interface Claim {
+  id: number;
+  subject: string;              // Company Name/ISIN
+  claim: string;               // "rated"
+  statement?: string;          // ESG assessment text
+  score?: number;              // -1 to 1 scale
+  stars?: number;              // 0 to 5 stars
+  aspect?: string;             // "esg-overall" | "esg-climate"
+  author?: string;             // Rating agency
+  sourceURI?: string;          // Source URL
+  confidence?: number;         // 0 to 1 confidence level
+  // ... additional fields
+}
 ```
+
+### Grade Calculation
+ESG scores (-1 to 1) are converted to letter grades:
+- **A+**: 90-100% (0.8-1.0)
+- **A**: 85-89% (0.7-0.79)
+- **A-**: 80-84% (0.6-0.69)
+- **B+**: 75-79% (0.5-0.59)
+- And so on...
+
+## 🔧 Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+## 🌐 API Integration
+
+The application is ready for backend integration:
+
+1. **API Service** (`src/services/api.ts`): Axios-based service with endpoints
+2. **Mock Service** (`src/services/mockService.ts`): Development fallback
+3. **Environment Config**: Backend URL in `.env` file
+
+### API Endpoints (Ready for Backend)
+- `GET /claims` - Get all claims
+- `GET /claims/:id` - Get claim by ID
+- `GET /claims?claim=rated` - Get rated claims only
+- `GET /nodes` - Get all nodes
+- `GET /nodes?entType=ORGANIZATION` - Get company nodes
+
+## 🚀 Deployment
+
+1. **Build the application**
+   ```bash
+   npm run build
+   ```
+
+2. **Deploy the `dist` folder** to your hosting provider
+
+3. **Configure environment variables** for production
+
+## 🔮 Future Enhancements
+
+- **Product Scanning**: QR code and image recognition (placeholder ready)
+- **Advanced Filtering**: By industry, score range, date
+- **Real-time Updates**: WebSocket integration
+- **User Authentication**: Login and personalization
+- **Data Visualization**: Charts and graphs for ESG trends
+- **Export Features**: PDF reports and data export
+
+## 🤝 Contributing
+
+1. Follow the existing code structure and naming conventions
+2. Use TypeScript for all new components
+3. Follow Material-UI design patterns
+4. Add proper error handling and loading states
+5. Include responsive design considerations
+
+## 📝 License
+
+This project is part of the LinkedTrust platform for ESG transparency and accountability.
+
+---
+
+**LinkedTrust Platform** - Bringing transparency to corporate ESG performance through verified attestations and community-driven ratings.

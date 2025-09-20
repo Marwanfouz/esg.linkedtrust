@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { Business, ArrowForward } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { CompanyCardData } from '../../types';
+import type { CompanyCardData } from '../../types';
 import { GradeChip } from '../Common';
 import { transformUtils } from '../../services/utils';
 
@@ -19,7 +19,7 @@ interface CompanyCardProps {
   company: CompanyCardData;
 }
 
-const CompanyCard: React.FC<CompanyCardProps> = ({ company }) => {
+const CompanyCard: React.FC<CompanyCardProps> = React.memo(({ company }) => {
   const navigate = useNavigate();
 
   const handleViewDetails = () => {
@@ -127,6 +127,6 @@ const CompanyCard: React.FC<CompanyCardProps> = ({ company }) => {
       </CardActions>
     </Card>
   );
-};
+});
 
 export default CompanyCard;

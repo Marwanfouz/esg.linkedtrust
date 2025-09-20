@@ -21,7 +21,7 @@ import { CompanyGrid } from '../components/Company';
 import { LoadingSpinner, ErrorMessage } from '../components/Common';
 
 const CompaniesPage: React.FC = () => {
-  const { companies, loading, error, refetch, isLoading, isError } = useCompanies();
+  const { companies, error, refetch, isLoading, isError } = useCompanies();
   const [searchTerm, setSearchTerm] = React.useState('');
 
   // Filter companies based on search term

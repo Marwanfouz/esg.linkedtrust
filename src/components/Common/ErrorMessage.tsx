@@ -7,7 +7,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Refresh } from '@mui/icons-material';
-import { ApiError } from '../../types';
+import type { ApiError } from '../../types';
 import { errorUtils } from '../../services/utils';
 
 interface ErrorMessageProps {

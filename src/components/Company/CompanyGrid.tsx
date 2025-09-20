@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, Skeleton, Box } from '@mui/material';
-import { CompanyCardData } from '../../types';
+import type { CompanyCardData } from '../../types';
 import CompanyCard from './CompanyCard';
 
 interface CompanyGridProps {

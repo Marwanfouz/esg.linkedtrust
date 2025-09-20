@@ -23,7 +23,7 @@ const CompanyDetailsPage: React.FC = () => {
   const navigate = useNavigate();
   const claimId = id ? parseInt(id, 10) : undefined;
 
-  const { claim, loading, error, refetch, isLoading, isError } = useClaim(claimId);
+  const { claim, error, refetch, isLoading, isError } = useClaim(claimId);
 
   const handleBack = () => {
     navigate(-1);

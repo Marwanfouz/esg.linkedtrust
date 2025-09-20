@@ -1,4 +1,4 @@
-import { Claim, CompanyCardData, LoadingState, ApiError } from '../types';
+import type { Claim, CompanyCardData, LoadingState, ApiError } from '../types';
 import { calculateGrade } from '../theme/theme';
 
 // Data transformation utilities

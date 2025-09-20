@@ -1,5 +1,6 @@
 import React from 'react';
-import { Chip, ChipProps } from '@mui/material';
+import { Chip } from '@mui/material';
+import type { ChipProps } from '@mui/material';
 import { getGradeColor } from '../../theme/theme';
 
 interface GradeChipProps extends Omit<ChipProps, 'color'> {
@@ -7,7 +8,7 @@ interface GradeChipProps extends Omit<ChipProps, 'color'> {
   size?: 'small' | 'medium';
 }
 
-const GradeChip: React.FC<GradeChipProps> = ({ grade, size = 'medium', ...props }) => {
+const GradeChip: React.FC<GradeChipProps> = React.memo(({ grade, size = 'medium', ...props }) => {
   const color = getGradeColor(grade);
 
   return (
@@ -24,6 +25,6 @@ const GradeChip: React.FC<GradeChipProps> = ({ grade, size = 'medium', ...props 
       {...props}
     />
   );
-};
+});
 
 export default GradeChip;

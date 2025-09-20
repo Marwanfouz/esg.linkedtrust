@@ -1,4 +1,4 @@
-import { Claim, Node, CompanyCardData } from '../types';
+import type { Claim, Node, CompanyCardData } from '../types';
 import mockData from '../data/mockData.json';
 import { calculateGrade } from '../theme/theme';
 
@@ -16,7 +16,7 @@ export const mockService = {
       dateObserved: claim.dateObserved ? new Date(claim.dateObserved) : undefined,
       createdAt: new Date(claim.createdAt),
       lastUpdatedAt: new Date(claim.lastUpdatedAt),
-    }));
+    } as Claim));
   },
 
   // Get claim by ID
@@ -31,7 +31,7 @@ export const mockService = {
       dateObserved: claim.dateObserved ? new Date(claim.dateObserved) : undefined,
       createdAt: new Date(claim.createdAt),
       lastUpdatedAt: new Date(claim.lastUpdatedAt),
-    };
+    } as Claim;
   },
 
   // Get claims for a specific company
@@ -45,7 +45,7 @@ export const mockService = {
         dateObserved: claim.dateObserved ? new Date(claim.dateObserved) : undefined,
         createdAt: new Date(claim.createdAt),
         lastUpdatedAt: new Date(claim.lastUpdatedAt),
-      }));
+      } as Claim));
     
     return claims;
   },
@@ -61,7 +61,7 @@ export const mockService = {
         dateObserved: claim.dateObserved ? new Date(claim.dateObserved) : undefined,
         createdAt: new Date(claim.createdAt),
         lastUpdatedAt: new Date(claim.lastUpdatedAt),
-      }));
+      } as Claim));
   },
 
   // Get company card data (transformed for dashboard)
@@ -81,19 +81,19 @@ export const mockService = {
   // Get all nodes
   getNodes: async (): Promise<Node[]> => {
     await mockService.delay();
-    return mockData.nodes;
+    return mockData.nodes as Node[];
   },
 
   // Get node by ID
   getNodeById: async (id: number): Promise<Node | null> => {
     await mockService.delay();
-    return mockData.nodes.find(n => n.id === id) || null;
+    return (mockData.nodes.find(n => n.id === id) as Node) || null;
   },
 
   // Get company nodes only
   getCompanyNodes: async (): Promise<Node[]> => {
     await mockService.delay();
-    return mockData.nodes.filter(node => node.entType === 'ORGANIZATION');
+    return mockData.nodes.filter(node => node.entType === 'ORGANIZATION') as Node[];
   },
 
   // Search claims by query
@@ -112,7 +112,7 @@ export const mockService = {
         dateObserved: claim.dateObserved ? new Date(claim.dateObserved) : undefined,
         createdAt: new Date(claim.createdAt),
         lastUpdatedAt: new Date(claim.lastUpdatedAt),
-      }));
+      } as Claim));
   },
 
   // Search nodes by query
@@ -122,7 +122,7 @@ export const mockService = {
     return mockData.nodes.filter(node => 
       node.name.toLowerCase().includes(searchTerm) ||
       node.descrip.toLowerCase().includes(searchTerm)
-    );
+    ) as Node[];
   },
 };
 
