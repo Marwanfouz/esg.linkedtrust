@@ -132,7 +132,7 @@ export class ESGCalculationEngine {
     // Calculate validation metrics
     const validationMetrics = this.calculateValidationMetrics(claims);
 
-    return {
+    const metrics = {
       overallScore,
       overallPercentage,
       overallStars,
@@ -145,6 +145,19 @@ export class ESGCalculationEngine {
       ...validationMetrics,
       lastUpdated: new Date()
     };
+
+    // Validate the calculated metrics
+    if (!this.validateMetrics(metrics)) {
+      console.warn('Calculated metrics failed validation, but returning anyway for debugging');
+    }
+
+    // Log calculation breakdown for debugging (only in development)
+    if (process.env.NODE_ENV === 'development') {
+      const breakdown = this.getCalculationBreakdown(claims);
+      console.log('ESG Calculation Breakdown:', breakdown);
+    }
+
+    return metrics;
   }
 
   /**
@@ -490,17 +503,204 @@ export class ESGCalculationEngine {
   }
 
   /**
-   * Validate calculation results
+   * Validate calculation results with comprehensive checks
    */
   static validateMetrics(metrics: ESGMetrics): boolean {
-    return (
-      metrics.overallPercentage >= 0 && metrics.overallPercentage <= 100 &&
-      metrics.overallStars >= 0 && metrics.overallStars <= 5 &&
-      metrics.confidenceLevel >= 0 && metrics.confidenceLevel <= 1 &&
-      metrics.industryPercentile >= 0 && metrics.industryPercentile <= 100 &&
-      metrics.endorsementRate >= 0 && metrics.endorsementRate <= 100 &&
-      metrics.consensusPercentage >= 0 && metrics.consensusPercentage <= 100
+    const validationErrors: string[] = [];
+    
+    // Basic range checks
+    if (metrics.overallPercentage < 0 || metrics.overallPercentage > 100) {
+      validationErrors.push(`Invalid overall percentage: ${metrics.overallPercentage}`);
+    }
+    
+    if (metrics.overallStars < 0 || metrics.overallStars > 5) {
+      validationErrors.push(`Invalid overall stars: ${metrics.overallStars}`);
+    }
+    
+    if (metrics.confidenceLevel < 0 || metrics.confidenceLevel > 1) {
+      validationErrors.push(`Invalid confidence level: ${metrics.confidenceLevel}`);
+    }
+    
+    if (metrics.industryPercentile < 0 || metrics.industryPercentile > 100) {
+      validationErrors.push(`Invalid industry percentile: ${metrics.industryPercentile}`);
+    }
+    
+    if (metrics.endorsementRate < 0 || metrics.endorsementRate > 100) {
+      validationErrors.push(`Invalid endorsement rate: ${metrics.endorsementRate}`);
+    }
+    
+    if (metrics.consensusPercentage < 0 || metrics.consensusPercentage > 100) {
+      validationErrors.push(`Invalid consensus percentage: ${metrics.consensusPercentage}`);
+    }
+    
+    // Pillar score range checks
+    if (metrics.environmentalScore < 0 || metrics.environmentalScore > 100) {
+      validationErrors.push(`Invalid environmental score: ${metrics.environmentalScore}`);
+    }
+    
+    if (metrics.socialScore < 0 || metrics.socialScore > 100) {
+      validationErrors.push(`Invalid social score: ${metrics.socialScore}`);
+    }
+    
+    if (metrics.governanceScore < 0 || metrics.governanceScore > 100) {
+      validationErrors.push(`Invalid governance score: ${metrics.governanceScore}`);
+    }
+    
+    // Validation metrics consistency checks
+    if (metrics.totalValidations < 0) {
+      validationErrors.push(`Invalid total validations: ${metrics.totalValidations}`);
+    }
+    
+    if (metrics.endorsements < 0 || metrics.endorsements > metrics.totalValidations) {
+      validationErrors.push(`Invalid endorsements count: ${metrics.endorsements} > ${metrics.totalValidations}`);
+    }
+    
+    if (metrics.rejections < 0 || metrics.rejections > metrics.totalValidations) {
+      validationErrors.push(`Invalid rejections count: ${metrics.rejections} > ${metrics.totalValidations}`);
+    }
+    
+    if (metrics.averageRating < 0 || metrics.averageRating > 5) {
+      validationErrors.push(`Invalid average rating: ${metrics.averageRating}`);
+    }
+    
+    // Mathematical consistency checks
+    if (metrics.totalValidations > 0) {
+      const expectedEndorsementRate = (metrics.endorsements / metrics.totalValidations) * 100;
+      const endorsementRateDiff = Math.abs(metrics.endorsementRate - expectedEndorsementRate);
+      if (endorsementRateDiff > 0.1) { // Allow for small floating point differences
+        validationErrors.push(`Endorsement rate mismatch: ${metrics.endorsementRate} vs calculated ${expectedEndorsementRate}`);
+      }
+    }
+    
+    // Overall score consistency check (weighted average of pillars)
+    const calculatedOverall = (
+      metrics.environmentalScore * ESG_WEIGHTS.environmental +
+      metrics.socialScore * ESG_WEIGHTS.social +
+      metrics.governanceScore * ESG_WEIGHTS.governance
     );
+    
+    const overallDiff = Math.abs(metrics.overallPercentage - calculatedOverall);
+    if (overallDiff > 0.5) { // Allow for small rounding differences
+      validationErrors.push(`Overall score mismatch: ${metrics.overallPercentage} vs calculated ${calculatedOverall}`);
+    }
+    
+    // Log validation errors for debugging
+    if (validationErrors.length > 0) {
+      console.warn('ESG Metrics Validation Errors:', validationErrors);
+      return false;
+    }
+    
+    return true;
+  }
+  
+  /**
+   * Get detailed calculation breakdown for transparency
+   */
+  static getCalculationBreakdown(claims: Claim[]): {
+    pillarBreakdown: {
+      environmental: { claims: number; averageScore: number; weightedContribution: number };
+      social: { claims: number; averageScore: number; weightedContribution: number };
+      governance: { claims: number; averageScore: number; weightedContribution: number };
+    };
+    validationBreakdown: {
+      totalRatings: number;
+      ratingDistribution: { [key: number]: number };
+      endorsementThreshold: number;
+      consensusThreshold: number;
+    };
+    overallCalculation: {
+      weightedSum: number;
+      finalPercentage: number;
+      starRating: number;
+      grade: string;
+    };
+  } {
+    const validClaims = claims.filter(claim => 
+      claim.score !== undefined && 
+      claim.score !== null &&
+      claim.confidence !== undefined &&
+      claim.confidence > 0
+    );
+
+    // Pillar breakdown
+    const environmentalClaims = validClaims.filter(claim => this.isClaimInPillar(claim, 'environmental'));
+    const socialClaims = validClaims.filter(claim => this.isClaimInPillar(claim, 'social'));
+    const governanceClaims = validClaims.filter(claim => this.isClaimInPillar(claim, 'governance'));
+    
+    const environmentalScore = this.calculatePillarScore(validClaims, 'environmental');
+    const socialScore = this.calculatePillarScore(validClaims, 'social');
+    const governanceScore = this.calculatePillarScore(validClaims, 'governance');
+    
+    const environmentalPercentage = this.normalizeScoreToPercentage(environmentalScore);
+    const socialPercentage = this.normalizeScoreToPercentage(socialScore);
+    const governancePercentage = this.normalizeScoreToPercentage(governanceScore);
+    
+    const pillarBreakdown = {
+      environmental: {
+        claims: environmentalClaims.length,
+        averageScore: environmentalPercentage,
+        weightedContribution: environmentalPercentage * ESG_WEIGHTS.environmental
+      },
+      social: {
+        claims: socialClaims.length,
+        averageScore: socialPercentage,
+        weightedContribution: socialPercentage * ESG_WEIGHTS.social
+      },
+      governance: {
+        claims: governanceClaims.length,
+        averageScore: governancePercentage,
+        weightedContribution: governancePercentage * ESG_WEIGHTS.governance
+      }
+    };
+
+    // Validation breakdown
+    const allRatings: number[] = [];
+    claims.forEach(claim => {
+      if (claim.stars !== undefined && claim.stars !== null && claim.stars > 0) {
+        allRatings.push(claim.stars);
+      }
+      if (claim.validators) {
+        claim.validators.forEach(validator => {
+          if (validator.rating !== undefined && validator.rating !== null && validator.rating > 0) {
+            allRatings.push(validator.rating);
+          }
+        });
+      }
+    });
+    
+    const ratingDistribution: { [key: number]: number } = {};
+    for (let i = 1; i <= 5; i++) {
+      ratingDistribution[i] = allRatings.filter(rating => rating === i).length;
+    }
+    
+    const validationBreakdown = {
+      totalRatings: allRatings.length,
+      ratingDistribution,
+      endorsementThreshold: 4,
+      consensusThreshold: 1
+    };
+
+    // Overall calculation
+    const weightedSum = pillarBreakdown.environmental.weightedContribution +
+                      pillarBreakdown.social.weightedContribution +
+                      pillarBreakdown.governance.weightedContribution;
+    
+    const finalPercentage = weightedSum;
+    const starRating = this.convertPercentageToStars(finalPercentage);
+    const grade = GRADE_MAPPING[starRating as keyof typeof GRADE_MAPPING] || 'F';
+    
+    const overallCalculation = {
+      weightedSum,
+      finalPercentage,
+      starRating,
+      grade
+    };
+
+    return {
+      pillarBreakdown,
+      validationBreakdown,
+      overallCalculation
+    };
   }
 }
 
