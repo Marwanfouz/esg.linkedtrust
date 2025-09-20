@@ -1,19 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Layout } from './components';
+import { Dashboard } from './pages';
 import { Box, Typography } from '@mui/material';
-
-// Temporary placeholder components for routing
-const Dashboard = () => (
-  <Box>
-    <Typography variant="h4" gutterBottom>
-      Dashboard
-    </Typography>
-    <Typography variant="body1">
-      Welcome to LinkedTrust - ESG Transparency Platform
-    </Typography>
-  </Box>
-);
 
 const Companies = () => (
   <Box>
