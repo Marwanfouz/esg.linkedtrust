@@ -5,7 +5,11 @@ import {
   Typography,
   Button,
   Box,
+  IconButton,
+  Menu,
+  MenuItem,
 } from '@mui/material';
+import { MoreVert } from '@mui/icons-material';
 import {
   Dashboard,
   Search,
@@ -20,6 +24,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const navigationItems = [
     { label: 'Dashboard', path: '/', icon: <Dashboard /> },
@@ -29,6 +34,15 @@ const Header: React.FC<HeaderProps> = () => {
 
   const handleNavigation = (path: string) => {
     navigate(path);
+    setAnchorEl(null); // Close mobile menu
+  };
+
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -41,7 +55,7 @@ const Header: React.FC<HeaderProps> = () => {
               width: 32,
               height: 32,
               borderRadius: '50%',
-              background: 'linear-gradient(45deg, #1976d2 30%, #42a5f5 90%)',
+              background: 'linear-gradient(45deg, #2563eb 30%, #60a5fa 90%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -57,7 +71,7 @@ const Header: React.FC<HeaderProps> = () => {
             component="div"
             sx={{
               fontWeight: 600,
-              color: 'white',
+              color: 'primary.main',
               textDecoration: 'none',
               cursor: 'pointer',
             }}
@@ -67,29 +81,70 @@ const Header: React.FC<HeaderProps> = () => {
           </Typography>
         </Box>
 
-        {/* Navigation Items */}
-        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: 1 }}>
+        {/* Navigation Items - Desktop */}
+        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: 1, justifyContent: 'flex-end' }}>
           {navigationItems.map((item) => (
             <Button
               key={item.path}
-              color="inherit"
               startIcon={item.icon}
               onClick={() => handleNavigation(item.path)}
               sx={{
                 textTransform: 'none',
-                fontWeight: location.pathname === item.path ? 600 : 400,
-                backgroundColor: location.pathname === item.path ? 'rgba(255,255,255,0.1)' : 'transparent',
+                fontWeight: location.pathname === item.path ? 600 : 500,
+                color: location.pathname === item.path ? 'primary.main' : 'text.primary',
+                backgroundColor: location.pathname === item.path ? 'rgba(37, 99, 235, 0.1)' : 'transparent',
                 borderRadius: 2,
                 px: 2,
                 py: 1,
                 '&:hover': {
-                  backgroundColor: 'rgba(255,255,255,0.1)',
+                  backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                  color: 'primary.main',
                 },
               }}
             >
               {item.label}
             </Button>
           ))}
+        </Box>
+
+        {/* Navigation Items - Mobile */}
+        <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, justifyContent: 'flex-end' }}>
+          <IconButton
+            onClick={handleMenuOpen}
+            sx={{
+              color: 'text.primary',
+              '&:hover': {
+                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+              },
+            }}
+          >
+            <MoreVert />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+            sx={{
+              mt: 1,
+            }}
+          >
+            {navigationItems.map((item) => (
+              <MenuItem
+                key={item.path}
+                onClick={() => handleNavigation(item.path)}
+                sx={{
+                  fontWeight: location.pathname === item.path ? 600 : 400,
+                  color: location.pathname === item.path ? 'primary.main' : 'text.primary',
+                  backgroundColor: location.pathname === item.path ? 'rgba(37, 99, 235, 0.05)' : 'transparent',
+                }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                  {item.icon}
+                  {item.label}
+                </Box>
+              </MenuItem>
+            ))}
+          </Menu>
         </Box>
 
       </Toolbar>

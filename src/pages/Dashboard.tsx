@@ -17,7 +17,6 @@ import {
 import { useCompanies } from '../hooks';
 import { CompanyGrid } from '../components/Company';
 import { LoadingSpinner, ErrorMessage } from '../components/Common';
-import { ESGCalculationEngine } from '../services/esgCalculations';
 import { validationUtils } from '../services/utils';
 
 const Dashboard: React.FC = () => {
@@ -57,7 +56,7 @@ const Dashboard: React.FC = () => {
   }).length;
 
   // Add development-only validation logging
-  if (process.env.NODE_ENV === 'development' && companies.length > 0) {
+  if (typeof window !== 'undefined' && companies.length > 0) {
     // Validate A-grade classification
     const aGradeValidation = validationUtils.validateAGradeClassification(companies);
     

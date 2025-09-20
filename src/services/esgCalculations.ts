@@ -151,8 +151,8 @@ export class ESGCalculationEngine {
       console.warn('Calculated metrics failed validation, but returning anyway for debugging');
     }
 
-    // Log calculation breakdown for debugging (only in development)
-    if (process.env.NODE_ENV === 'development') {
+    // Log calculation breakdown for debugging (only in browser environment)
+    if (typeof window !== 'undefined') {
       const breakdown = this.getCalculationBreakdown(claims);
       console.log('ESG Calculation Breakdown:', breakdown);
     }
@@ -400,21 +400,6 @@ export class ESGCalculationEngine {
     };
   }
 
-  /**
-   * Generate social media links for validators
-   */
-  private static generateSocialLinks(name: string) {
-    const cleanName = name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-    const hasLinkedIn = Math.random() > 0.3; // 70% chance of having LinkedIn
-    const hasTwitter = Math.random() > 0.6; // 40% chance of having Twitter
-    const hasWebsite = Math.random() > 0.7; // 30% chance of having website
-    
-    return {
-      linkedinUrl: hasLinkedIn ? `https://linkedin.com/in/${cleanName}` : undefined,
-      twitterUrl: hasTwitter ? `https://twitter.com/${cleanName}` : undefined,
-      websiteUrl: hasWebsite ? `https://${cleanName}.com` : undefined,
-    };
-  }
 
   /**
    * Generate expertise based on role
