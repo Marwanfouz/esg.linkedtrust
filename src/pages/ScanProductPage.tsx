@@ -2,8 +2,6 @@ import React from 'react';
 import {
   Box,
   Typography,
-  Paper,
-  Button,
   Card,
   CardContent,
   Grid,
@@ -15,8 +13,6 @@ import {
   Search,
   PhotoCamera,
   Upload,
-  Inventory,
-  TrendingUp,
 } from '@mui/icons-material';
 
 const ScanProductPage: React.FC = () => {
@@ -45,15 +41,6 @@ const ScanProductPage: React.FC = () => {
       description: 'Upload multiple product identifiers at once for comprehensive ESG analysis and reporting.',
       status: 'Coming Soon',
     },
-  ];
-
-  const useCases = [
-    'Supply Chain Transparency',
-    'Sustainable Procurement',
-    'ESG Compliance Checking',
-    'Consumer Education',
-    'Retailer Verification',
-    'Impact Assessment',
   ];
 
   return (
@@ -118,95 +105,6 @@ const ScanProductPage: React.FC = () => {
         ))}
       </Grid>
 
-      {/* Use Cases Section */}
-      <Paper elevation={2} sx={{ p: 4, mb: 4, background: 'linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%)' }}>
-        <Box sx={{ textAlign: 'center', mb: 4 }}>
-          <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
-            <TrendingUp color="primary" />
-            Use Cases
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Product scanning will enable various ESG and sustainability applications
-          </Typography>
-        </Box>
-
-        <Grid container spacing={2} justifyContent="center">
-          {useCases.map((useCase, index) => (
-            <Grid item key={index}>
-              <Chip
-                label={useCase}
-                variant="outlined"
-                color="primary"
-                sx={{
-                  py: 2,
-                  px: 1,
-                  height: 'auto',
-                  fontSize: '0.875rem',
-                  fontWeight: 500,
-                }}
-              />
-            </Grid>
-          ))}
-        </Grid>
-      </Paper>
-
-      {/* Call to Action */}
-      <Paper
-        elevation={1}
-        sx={{
-          p: 6,
-          textAlign: 'center',
-          backgroundColor: 'primary.main',
-          color: 'primary.contrastText',
-          borderRadius: 3,
-        }}
-      >
-        <Inventory sx={{ fontSize: 64, mb: 3, opacity: 0.9 }} />
-        <Typography variant="h4" gutterBottom sx={{ fontWeight: 600 }}>
-          Stay Informed
-        </Typography>
-        <Typography variant="body1" sx={{ mb: 4, maxWidth: 600, mx: 'auto', opacity: 0.9 }}>
-          Be the first to know when our product scanning features become available. 
-          These tools will revolutionize how you assess and verify product sustainability.
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Button
-            variant="contained"
-            size="large"
-            sx={{
-              backgroundColor: 'white',
-              color: 'primary.main',
-              textTransform: 'none',
-              fontWeight: 600,
-              px: 4,
-              '&:hover': {
-                backgroundColor: 'grey.100',
-              },
-            }}
-            disabled // Placeholder for future notification signup
-          >
-            Get Notified
-          </Button>
-          <Button
-            variant="outlined"
-            size="large"
-            sx={{
-              borderColor: 'white',
-              color: 'white',
-              textTransform: 'none',
-              fontWeight: 500,
-              px: 4,
-              '&:hover': {
-                borderColor: 'grey.300',
-                backgroundColor: 'rgba(255,255,255,0.1)',
-              },
-            }}
-            onClick={() => window.location.href = '/'}
-          >
-            Explore Dashboard
-          </Button>
-        </Box>
-      </Paper>
     </Box>
   );
 };

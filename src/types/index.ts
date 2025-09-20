@@ -1,5 +1,14 @@
 // TypeScript interfaces matching the exact Prisma schema
 
+export interface Validator {
+  name: string;
+  role: string;
+  rating: number;
+  statement: string;
+  verified: boolean;
+  organization: string;
+}
+
 export interface Claim {
   id: number;
   subject: string;              // Company Name/ISIN
@@ -41,6 +50,9 @@ export interface Claim {
   // Timestamps
   createdAt: Date;
   lastUpdatedAt: Date;
+  
+  // Validation & Endorsements
+  validators?: Validator[];
 }
 
 export interface Node {

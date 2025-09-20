@@ -18,7 +18,33 @@
       "issuerId": "esg-rating-agency",
       "issuerIdType": "URL",
       "createdAt": "2024-01-15T10:30:00Z",
-      "lastUpdatedAt": "2024-01-15T10:30:00Z"
+      "lastUpdatedAt": "2024-01-15T10:30:00Z",
+      "validators": [
+        {
+          "name": "Dr. Sarah Johnson",
+          "role": "ESG Analyst",
+          "rating": 4,
+          "statement": "Strong environmental initiatives and governance structure with clear sustainability roadmap.",
+          "verified": true,
+          "organization": "Sustainability Institute"
+        },
+        {
+          "name": "Michael Chen",
+          "role": "Sustainability Expert",
+          "rating": 4,
+          "statement": "Impressive carbon reduction commitments and transparency in reporting.",
+          "verified": true,
+          "organization": "Green Finance Council"
+        },
+        {
+          "name": "Prof. Emma Williams",
+          "role": "Corporate Ethics",
+          "rating": 5,
+          "statement": "Exemplary social responsibility programs and stakeholder engagement.",
+          "verified": true,
+          "organization": "Business Ethics Institute"
+        }
+      ]
     },
     {
       "id": 2,
@@ -38,7 +64,25 @@
       "issuerId": "sustainability-institute",
       "issuerIdType": "URL",
       "createdAt": "2024-01-20T14:15:00Z",
-      "lastUpdatedAt": "2024-01-20T14:15:00Z"
+      "lastUpdatedAt": "2024-01-20T14:15:00Z",
+      "validators": [
+        {
+          "name": "Dr. Lisa Park",
+          "role": "Climate Policy Expert",
+          "rating": 5,
+          "statement": "Outstanding leadership in carbon neutrality and renewable energy adoption.",
+          "verified": true,
+          "organization": "Climate Action Network"
+        },
+        {
+          "name": "James Rodriguez",
+          "role": "Tech Sustainability Analyst",
+          "rating": 5,
+          "statement": "Pioneering sustainable technology practices and data center efficiency.",
+          "verified": true,
+          "organization": "Tech for Good Alliance"
+        }
+      ]
     },
     {
       "id": 3,
