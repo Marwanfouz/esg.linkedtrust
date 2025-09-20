@@ -61,6 +61,21 @@ const ValidationEndorsements: React.FC<ValidationEndorsementsProps> = ({
 
   const hasMoreValidations = validationHistory.length > 5;
 
+  // Calculate rating distribution for visualization
+  const getRatingDistribution = () => {
+    const distribution = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    validationHistory.forEach(validation => {
+      const rating = Math.round(validation.rating);
+      if (rating >= 1 && rating <= 5) {
+        distribution[rating as keyof typeof distribution]++;
+      }
+    });
+    return distribution;
+  };
+
+  const ratingDistribution = getRatingDistribution();
+  const neutralReviews = totalValidations - endorsements - rejections; // 3-star reviews
+
   // Calculate color for endorsement rate
   const getEndorsementColor = (rate: number) => {
     if (rate >= 80) return 'success';
@@ -144,79 +159,99 @@ const ValidationEndorsements: React.FC<ValidationEndorsementsProps> = ({
         <Box sx={{ mb: 3, p: 2, bgcolor: 'grey.50', borderRadius: 2 }}>
           <Grid container spacing={3}>
             <Grid item xs={6} sm={3}>
-              <Box sx={{ textAlign: 'center' }}>
-                <Typography variant="h5" sx={{ 
-                  fontWeight: 700, 
-                  color: 'primary.main',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 0.5
-                }}>
-                  <People fontSize="small" />
-                  {totalValidations}
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  Total Validators
-                </Typography>
-              </Box>
+              <Tooltip title="Number of individuals who provided ratings and assessments" arrow>
+                <Box sx={{ textAlign: 'center', cursor: 'help' }}>
+                  <Typography variant="h5" sx={{ 
+                    fontWeight: 700, 
+                    color: 'primary.main',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 0.5
+                  }}>
+                    <People fontSize="small" />
+                    {totalValidations}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Total Community Reviews
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" sx={{ display: 'block', fontSize: '0.65rem' }}>
+                    Independent assessments
+                  </Typography>
+                </Box>
+              </Tooltip>
             </Grid>
 
             <Grid item xs={6} sm={3}>
-              <Box sx={{ textAlign: 'center' }}>
-                <Typography variant="h5" sx={{ 
-                  fontWeight: 700, 
-                  color: getEndorsementColor(endorsementRate),
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 0.5
-                }}>
-                  <ThumbUp fontSize="small" />
-                  {Math.round(endorsementRate)}%
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  Endorsement Rate
-                </Typography>
-              </Box>
+              <Tooltip title="Percentage of reviews with 4 or 5 stars (considered positive endorsements)" arrow>
+                <Box sx={{ textAlign: 'center', cursor: 'help' }}>
+                  <Typography variant="h5" sx={{ 
+                    fontWeight: 700, 
+                    color: getEndorsementColor(endorsementRate),
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 0.5
+                  }}>
+                    <ThumbUp fontSize="small" />
+                    {Math.round(endorsementRate)}%
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Positive Rating Rate
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" sx={{ display: 'block', fontSize: '0.65rem' }}>
+                    4-5 star ratings
+                  </Typography>
+                </Box>
+              </Tooltip>
             </Grid>
 
             <Grid item xs={6} sm={3}>
-              <Box sx={{ textAlign: 'center' }}>
-                <Typography variant="h5" sx={{ 
-                  fontWeight: 700, 
-                  color: getConsensusColor(consensusPercentage),
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 0.5
-                }}>
-                  <TrendingUp fontSize="small" />
-                  {Math.round(consensusPercentage)}%
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  Consensus
-                </Typography>
-              </Box>
+              <Tooltip title="How closely reviewers agree on the rating (within 1 star of the average)" arrow>
+                <Box sx={{ textAlign: 'center', cursor: 'help' }}>
+                  <Typography variant="h5" sx={{ 
+                    fontWeight: 700, 
+                    color: getConsensusColor(consensusPercentage),
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 0.5
+                  }}>
+                    <TrendingUp fontSize="small" />
+                    {Math.round(consensusPercentage)}%
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Community Agreement
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" sx={{ display: 'block', fontSize: '0.65rem' }}>
+                    Rating consistency
+                  </Typography>
+                </Box>
+              </Tooltip>
             </Grid>
 
             <Grid item xs={6} sm={3}>
-              <Box sx={{ textAlign: 'center' }}>
-                <Typography variant="h5" sx={{ 
-                  fontWeight: 700, 
-                  color: 'success.main',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 0.5
-                }}>
-                  <Verified fontSize="small" />
-                  {Math.round(verifiedRate)}%
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  Verified Rate
-                </Typography>
-              </Box>
+              <Tooltip title="Percentage of reviewers with verified professional credentials and expertise" arrow>
+                <Box sx={{ textAlign: 'center', cursor: 'help' }}>
+                  <Typography variant="h5" sx={{ 
+                    fontWeight: 700, 
+                    color: 'success.main',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 0.5
+                  }}>
+                    <Verified fontSize="small" />
+                    {Math.round(verifiedRate)}%
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Verified Reviewers
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" sx={{ display: 'block', fontSize: '0.65rem' }}>
+                    Credentialed evaluators
+                  </Typography>
+                </Box>
+              </Tooltip>
             </Grid>
           </Grid>
         </Box>
@@ -225,11 +260,13 @@ const ValidationEndorsements: React.FC<ValidationEndorsementsProps> = ({
         <Box sx={{ mb: 3 }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
             <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
-              Community Endorsement
+              Community Assessment Results
             </Typography>
-            <Typography variant="subtitle2" color="text.secondary">
-              {endorsements} of {totalValidations} validators
-            </Typography>
+            <Tooltip title="Endorsements are reviews with 4 or 5 star ratings" arrow>
+              <Typography variant="subtitle2" color="text.secondary" sx={{ cursor: 'help' }}>
+                {endorsements} Positive Reviews out of {totalValidations} Total
+              </Typography>
+            </Tooltip>
           </Box>
           <LinearProgress
             variant="determinate"
@@ -250,16 +287,130 @@ const ValidationEndorsements: React.FC<ValidationEndorsementsProps> = ({
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
               <ThumbUp fontSize="small" color="success" />
               <Typography variant="caption" color="success.main">
-                {endorsements} Endorsed
+                {endorsements} Positive Reviews (4-5 ⭐)
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
               <ThumbDown fontSize="small" sx={{ color: 'grey.600' }} />
               <Typography variant="caption" sx={{ color: 'grey.600' }}>
-                {rejections} Needs Review
+                {rejections} Critical Reviews (1-2 ⭐)
               </Typography>
             </Box>
           </Box>
+        </Box>
+
+        {/* Rating Distribution Visualization */}
+        <Box sx={{ mb: 3, p: 3, bgcolor: 'background.paper', borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
+          <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 600, mb: 2 }}>
+            Rating Distribution Breakdown
+          </Typography>
+          <Grid container spacing={2}>
+            {[5, 4, 3, 2, 1].map((stars) => {
+              const count = ratingDistribution[stars as keyof typeof ratingDistribution];
+              const percentage = totalValidations > 0 ? (count / totalValidations) * 100 : 0;
+              const color = stars >= 4 ? 'success' : stars === 3 ? 'primary' : 'error';
+              
+              return (
+                <Grid item xs={12} key={stars}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Box sx={{ minWidth: 80, display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                        {stars} ⭐
+                      </Typography>
+                    </Box>
+                    <Box sx={{ flexGrow: 1 }}>
+                      <LinearProgress
+                        variant="determinate"
+                        value={percentage}
+                        sx={{
+                          height: 6,
+                          borderRadius: 3,
+                          backgroundColor: 'grey.200',
+                          '& .MuiLinearProgress-bar': {
+                            borderRadius: 3,
+                            backgroundColor: `${color}.main`,
+                          },
+                        }}
+                      />
+                    </Box>
+                    <Box sx={{ minWidth: 60, textAlign: 'right' }}>
+                      <Typography variant="body2" color="text.secondary">
+                        {count} ({percentage.toFixed(0)}%)
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Grid>
+              );
+            })}
+          </Grid>
+          
+          {/* Summary row */}
+          <Box sx={{ mt: 2, pt: 2, borderTop: '1px solid', borderColor: 'divider' }}>
+            <Grid container spacing={2}>
+              <Grid item xs={4}>
+                <Box sx={{ textAlign: 'center', p: 1, bgcolor: 'success.50', borderRadius: 1 }}>
+                  <Typography variant="caption" color="success.dark" sx={{ fontWeight: 600 }}>
+                    Positive (4-5 ⭐)
+                  </Typography>
+                  <Typography variant="h6" color="success.dark" sx={{ fontWeight: 700 }}>
+                    {endorsements} ({Math.round(endorsementRate)}%)
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={4}>
+                <Box sx={{ textAlign: 'center', p: 1, bgcolor: 'primary.50', borderRadius: 1 }}>
+                  <Typography variant="caption" color="primary.dark" sx={{ fontWeight: 600 }}>
+                    Neutral (3 ⭐)
+                  </Typography>
+                  <Typography variant="h6" color="primary.dark" sx={{ fontWeight: 700 }}>
+                    {neutralReviews} ({totalValidations > 0 ? Math.round((neutralReviews / totalValidations) * 100) : 0}%)
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={4}>
+                <Box sx={{ textAlign: 'center', p: 1, bgcolor: 'error.50', borderRadius: 1 }}>
+                  <Typography variant="caption" color="error.dark" sx={{ fontWeight: 600 }}>
+                    Critical (1-2 ⭐)
+                  </Typography>
+                  <Typography variant="h6" color="error.dark" sx={{ fontWeight: 700 }}>
+                    {rejections} ({totalValidations > 0 ? Math.round((rejections / totalValidations) * 100) : 0}%)
+                  </Typography>
+                </Box>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+
+        {/* Methodology Explanation */}
+        <Box sx={{ mb: 3, p: 2, bgcolor: 'info.50', borderRadius: 2, border: '1px solid', borderColor: 'info.light' }}>
+          <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 600, color: 'info.dark' }}>
+            How Community Ratings Work
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              <Typography variant="body2" color="info.dark" sx={{ mb: 1 }}>
+                <strong>Endorsement Criteria:</strong>
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                • 4-5 star ratings = Positive endorsement<br/>
+                • 3 star ratings = Neutral feedback<br/>
+                • 1-2 star ratings = Critical feedback
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Typography variant="body2" color="info.dark" sx={{ mb: 1 }}>
+                <strong>Verification Process:</strong>
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                • Professional credentials verified<br/>
+                • ESG expertise confirmed<br/>
+                • Independent assessment required
+              </Typography>
+            </Grid>
+          </Grid>
+          <Typography variant="body2" color="info.dark" sx={{ fontStyle: 'italic' }}>
+            Community Agreement measures how closely reviewers agree (within 1 star of average rating).
+          </Typography>
         </Box>
 
         <Divider sx={{ my: 2 }} />
@@ -498,36 +649,69 @@ const ValidationEndorsements: React.FC<ValidationEndorsementsProps> = ({
           </Box>
         )}
 
-        {/* Average Rating Summary */}
-        <Box sx={{ mt: 3, p: 2, bgcolor: 'primary.light', borderRadius: 2 }}>
-          <Grid container spacing={2} alignItems="center">
-            <Grid item xs={12} sm={6}>
-              <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 600, color: 'primary.dark' }}>
-                Average Community Rating
-              </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Rating 
-                  value={averageRating} 
-                  readOnly 
-                  precision={0.1}
-                  sx={{
-                    '& .MuiRating-iconFilled': {
-                      color: 'primary.dark',
-                    },
-                  }}
-                />
-                <Typography variant="h6" sx={{ fontWeight: 700, color: 'primary.dark' }}>
-                  {averageRating.toFixed(1)}/5.0
+        {/* Enhanced Average Rating Summary */}
+        <Box sx={{ mt: 3, p: 3, bgcolor: 'primary.light', borderRadius: 2, border: '2px solid', borderColor: 'primary.main' }}>
+          <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, color: 'primary.dark', textAlign: 'center' }}>
+            📊 Community Assessment Summary
+          </Typography>
+          
+          <Grid container spacing={3} alignItems="center">
+            <Grid item xs={12} sm={4}>
+              <Box sx={{ textAlign: 'center' }}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 600, color: 'primary.dark', mb: 1 }}>
+                  Overall Rating
+                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, mb: 1 }}>
+                  <Rating 
+                    value={averageRating} 
+                    readOnly 
+                    precision={0.1}
+                    size="large"
+                    sx={{
+                      '& .MuiRating-iconFilled': {
+                        color: 'primary.dark',
+                      },
+                    }}
+                  />
+                </Box>
+                <Typography variant="h5" sx={{ fontWeight: 700, color: 'primary.dark' }}>
+                  {averageRating.toFixed(1)} out of 5.0
                 </Typography>
               </Box>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <Typography variant="caption" color="primary.dark" sx={{ display: 'block' }}>
-                Based on {totalValidations} validator{totalValidations !== 1 ? 's' : ''}
-              </Typography>
-              <Typography variant="caption" color="primary.dark" sx={{ display: 'block' }}>
-                {Math.round(consensusPercentage)}% consensus among validators
-              </Typography>
+            
+            <Grid item xs={12} sm={4}>
+              <Box sx={{ textAlign: 'center' }}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 600, color: 'primary.dark', mb: 1 }}>
+                  Community Participation
+                </Typography>
+                <Typography variant="h5" sx={{ fontWeight: 700, color: 'primary.dark' }}>
+                  {totalValidations}
+                </Typography>
+                <Typography variant="body2" color="primary.dark">
+                  Total Reviews
+                </Typography>
+                <Typography variant="caption" color="primary.dark" sx={{ display: 'block' }}>
+                  {Math.round(verifiedRate)}% verified professionals
+                </Typography>
+              </Box>
+            </Grid>
+            
+            <Grid item xs={12} sm={4}>
+              <Box sx={{ textAlign: 'center' }}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 600, color: 'primary.dark', mb: 1 }}>
+                  Community Agreement
+                </Typography>
+                <Typography variant="h5" sx={{ fontWeight: 700, color: 'primary.dark' }}>
+                  {Math.round(consensusPercentage)}%
+                </Typography>
+                <Typography variant="body2" color="primary.dark">
+                  Rating Consistency
+                </Typography>
+                <Typography variant="caption" color="primary.dark" sx={{ display: 'block' }}>
+                  Reviewers within 1 star
+                </Typography>
+              </Box>
             </Grid>
           </Grid>
         </Box>
