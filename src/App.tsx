@@ -1,35 +1,66 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Layout } from './components';
+import { Box, Typography } from '@mui/material';
+
+// Temporary placeholder components for routing
+const Dashboard = () => (
+  <Box>
+    <Typography variant="h4" gutterBottom>
+      Dashboard
+    </Typography>
+    <Typography variant="body1">
+      Welcome to LinkedTrust - ESG Transparency Platform
+    </Typography>
+  </Box>
+);
+
+const Companies = () => (
+  <Box>
+    <Typography variant="h4" gutterBottom>
+      Companies
+    </Typography>
+    <Typography variant="body1">
+      Company listings will be displayed here
+    </Typography>
+  </Box>
+);
+
+const ScanProduct = () => (
+  <Box>
+    <Typography variant="h4" gutterBottom>
+      Scan Product
+    </Typography>
+    <Typography variant="body1">
+      Product scanning functionality will be available here
+    </Typography>
+  </Box>
+);
+
+const CompanyDetails = () => (
+  <Box>
+    <Typography variant="h4" gutterBottom>
+      Company Details
+    </Typography>
+    <Typography variant="body1">
+      Detailed company information will be displayed here
+    </Typography>
+  </Box>
+);
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/companies" element={<Companies />} />
+          <Route path="/scan" element={<ScanProduct />} />
+          <Route path="/company/:id" element={<CompanyDetails />} />
+        </Routes>
+      </Layout>
+    </Router>
+  );
 }
 
-export default App
+export default App;
