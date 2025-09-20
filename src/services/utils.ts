@@ -153,6 +153,96 @@ export const validationUtils = {
   isValidConfidence: (confidence: number): boolean => {
     return confidence >= 0 && confidence <= 1;
   },
+
+  // Validate ESG score consistency between dashboard and details
+  validateScoreConsistency: (dashboardScore: number, detailsScore: number, companyName: string): boolean => {
+    const dashboardPercentage = ((dashboardScore + 1) / 2) * 100;
+    const detailsPercentage = ((detailsScore + 1) / 2) * 100;
+    const difference = Math.abs(dashboardPercentage - detailsPercentage);
+    
+    // Allow for small rounding differences (0.5%)
+    const isConsistent = difference <= 0.5;
+    
+    if (!isConsistent) {
+      console.error(`Score inconsistency for ${companyName}:`, {
+        dashboardScore,
+        dashboardPercentage: Math.round(dashboardPercentage),
+        detailsScore,
+        detailsPercentage: Math.round(detailsPercentage),
+        difference: Math.round(difference * 10) / 10
+      });
+    }
+    
+    return isConsistent;
+  },
+
+  // Validate grade matches percentage
+  validateGradeConsistency: (score: number, grade: string, companyName: string): boolean => {
+    const percentage = ((score + 1) / 2) * 100;
+    let expectedGradePrefix = '';
+    
+    if (percentage >= 95) expectedGradePrefix = 'A+';
+    else if (percentage >= 90) expectedGradePrefix = 'A';
+    else if (percentage >= 85) expectedGradePrefix = 'A-';
+    else if (percentage >= 80) expectedGradePrefix = 'B+';
+    else if (percentage >= 75) expectedGradePrefix = 'B';
+    else if (percentage >= 70) expectedGradePrefix = 'B-';
+    else if (percentage >= 65) expectedGradePrefix = 'C+';
+    else if (percentage >= 60) expectedGradePrefix = 'C';
+    else if (percentage >= 55) expectedGradePrefix = 'C-';
+    else if (percentage >= 50) expectedGradePrefix = 'D+';
+    else if (percentage >= 45) expectedGradePrefix = 'D';
+    else if (percentage >= 40) expectedGradePrefix = 'D-';
+    else expectedGradePrefix = 'F';
+    
+    const isConsistent = grade === expectedGradePrefix;
+    
+    if (!isConsistent) {
+      console.warn(`Grade inconsistency for ${companyName}:`, {
+        score,
+        percentage: Math.round(percentage),
+        actualGrade: grade,
+        expectedGrade: expectedGradePrefix
+      });
+    }
+    
+    return isConsistent;
+  },
+
+  // Validate A-grade classification
+  validateAGradeClassification: (companies: CompanyCardData[]): { 
+    correct: number; 
+    incorrect: CompanyCardData[]; 
+    expectedCount: number 
+  } => {
+    const results = companies.map(company => {
+      const percentage = ((company.score + 1) / 2) * 100;
+      const shouldBeAGrade = percentage >= 85;
+      const isAGrade = company.grade.startsWith('A');
+      
+      return {
+        company,
+        percentage,
+        shouldBeAGrade,
+        isAGrade,
+        isCorrect: shouldBeAGrade === isAGrade
+      };
+    });
+    
+    const correct = results.filter(r => r.isCorrect).length;
+    const incorrect = results.filter(r => !r.isCorrect).map(r => r.company);
+    const expectedCount = results.filter(r => r.shouldBeAGrade).length;
+    
+    if (incorrect.length > 0) {
+      console.error('A-grade classification errors:', incorrect.map(c => ({
+        name: c.subject,
+        grade: c.grade,
+        percentage: Math.round(((c.score + 1) / 2) * 100)
+      })));
+    }
+    
+    return { correct, incorrect, expectedCount };
+  },
 };
 
 export default {

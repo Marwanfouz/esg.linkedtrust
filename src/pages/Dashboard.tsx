@@ -17,16 +17,74 @@ import {
 import { useCompanies } from '../hooks';
 import { CompanyGrid } from '../components/Company';
 import { LoadingSpinner, ErrorMessage } from '../components/Common';
+import { ESGCalculationEngine } from '../services/esgCalculations';
+import { validationUtils } from '../services/utils';
 
 const Dashboard: React.FC = () => {
   const { companies, error, refetch, isLoading, isError } = useCompanies();
 
-  // Calculate dashboard stats
+  // Calculate dashboard stats using same logic as company details
   const totalCompanies = companies.length;
+  
+  // Calculate average ESG score from the SAME scores shown in company cards
+  // This ensures dashboard average matches individual company scores
   const avgScore = companies.length > 0 
-    ? companies.reduce((sum, company) => sum + company.score, 0) / companies.length 
+    ? companies.reduce((sum, company) => {
+        // Validate score range before calculation
+        if (company.score < -1 || company.score > 1) {
+          console.warn(`Invalid score for ${company.subject}: ${company.score}`);
+        }
+        
+        // Use the same percentage calculation as company details
+        const percentage = ((company.score + 1) / 2) * 100;
+        return sum + percentage;
+      }, 0) / companies.length 
     : 0;
-  const highPerformers = companies.filter(company => company.grade.startsWith('A')).length;
+  
+  // Count A-grade companies using same grade classification logic
+  // A-grade = companies with 85%+ ESG scores (A-, A, A+)
+  const highPerformers = companies.filter(company => {
+    const percentage = ((company.score + 1) / 2) * 100;
+    const isAGrade = percentage >= 85; // A-grade threshold
+    
+    // Validate grade consistency
+    const expectedAGrade = company.grade.startsWith('A');
+    if (isAGrade !== expectedAGrade) {
+      console.warn(`Grade mismatch for ${company.subject}: percentage=${percentage}%, grade=${company.grade}`);
+    }
+    
+    return isAGrade;
+  }).length;
+
+  // Add development-only validation logging
+  if (process.env.NODE_ENV === 'development' && companies.length > 0) {
+    // Validate A-grade classification
+    const aGradeValidation = validationUtils.validateAGradeClassification(companies);
+    
+    // Validate individual company grades
+    companies.forEach(company => {
+      validationUtils.validateGradeConsistency(company.score, company.grade, company.subject);
+    });
+    
+    console.log('Dashboard Calculation Validation:', {
+      totalCompanies,
+      avgScore: Math.round(avgScore),
+      highPerformers,
+      aGradeValidation: {
+        expected: aGradeValidation.expectedCount,
+        calculated: highPerformers,
+        isCorrect: aGradeValidation.expectedCount === highPerformers
+      },
+      companies: companies.map(c => ({
+        name: c.subject,
+        score: c.score,
+        percentage: Math.round(((c.score + 1) / 2) * 100),
+        grade: c.grade,
+        stars: c.stars,
+        isAGrade: c.grade.startsWith('A')
+      }))
+    });
+  }
 
   const stats = [
     {
@@ -37,7 +95,7 @@ const Dashboard: React.FC = () => {
     },
     {
       title: 'Average ESG Score',
-      value: `${Math.round(((avgScore + 1) / 2) * 100)}%`,
+      value: `${Math.round(avgScore)}%`,
       icon: <Assessment sx={{ fontSize: 40, color: 'secondary.main' }} />,
       color: 'secondary.main',
     },

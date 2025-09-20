@@ -68,7 +68,19 @@ export const useClaim = (id: number | undefined) => {
           // Also get all company claims for comprehensive ESG metrics
           const allMockClaims = await mockService.default.getCompanyClaims(mockData.subject);
           
-          setClaim(mockData);
+          // Calculate ESG metrics for consistency (SAME as main path)
+          const esgMetrics = ESGCalculationEngine.calculateESGMetrics(allMockClaims);
+          
+          // Enhance the claim with calculated metrics (SAME as main path)
+          const enhancedClaim: Claim = {
+            ...mockData,
+            // Override with calculated values to ensure accuracy
+            score: esgMetrics.overallScore,
+            stars: esgMetrics.overallStars,
+            confidence: esgMetrics.confidenceLevel,
+          };
+          
+          setClaim(enhancedClaim);
           setAllCompanyClaims(allMockClaims);
           setLoading('success');
           
