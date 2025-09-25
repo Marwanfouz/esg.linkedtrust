@@ -15,6 +15,8 @@ import {
   Business,
 } from '@mui/icons-material';
 import { useClaim } from '../hooks';
+import ESGCalculationEngine from '../services/esgCalculations';
+import type { ESGCategoryDetails, ESGCategoryKey } from '../types';
 import { CompanyDetails } from '../components/Company';
 import { LoadingSpinner, ErrorMessage } from '../components/Common';
 
@@ -23,7 +25,7 @@ const CompanyDetailsPage: React.FC = () => {
   const navigate = useNavigate();
   const claimId = id ? parseInt(id, 10) : undefined;
 
-  const { claim, esgMetrics, validationMetrics, error, refetch, isLoading, isError, hasESGData } = useClaim(claimId);
+  const { claim, esgMetrics, validationMetrics, error, refetch, isLoading, isError, hasESGData, allCompanyClaims } = useClaim(claimId);
 
   const handleBack = () => {
     navigate(-1);
@@ -170,6 +172,7 @@ const CompanyDetailsPage: React.FC = () => {
         esgMetrics={esgMetrics}
         validationMetrics={validationMetrics}
         hasESGData={hasESGData}
+        categoryDetails={hasESGData && allCompanyClaims && allCompanyClaims.length > 0 ? ESGCalculationEngine.getCategoryAttributeDetails(allCompanyClaims) : null}
       />
     </Box>
   );

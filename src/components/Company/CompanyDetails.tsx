@@ -20,21 +20,25 @@ import { GradeChip } from '../Common';
 import { transformUtils } from '../../services/utils';
 import { calculateGrade } from '../../theme/theme';
 import { useESGMetrics } from '../../hooks';
+import ESGCalculationEngine from '../../services/esgCalculations';
 import { ESGAssessment, ValidationEndorsements } from './';
 import type { ESGMetrics, ValidationMetrics } from '../../services/esgCalculations';
+import type { ESGCategoryDetails, ESGCategoryKey } from '../../types';
 
 interface CompanyDetailsProps {
   claim: Claim;
   esgMetrics?: ESGMetrics | null;
   validationMetrics?: ValidationMetrics | null;
   hasESGData?: boolean;
+  categoryDetails?: Record<ESGCategoryKey, ESGCategoryDetails> | null;
 }
 
 const CompanyDetails: React.FC<CompanyDetailsProps> = ({ 
   claim, 
   esgMetrics: providedESGMetrics, 
   validationMetrics: providedValidationMetrics, 
-  hasESGData: providedHasESGData 
+  hasESGData: providedHasESGData,
+  categoryDetails
 }) => {
   const companyName = transformUtils.extractCompanyName(claim.subject);
   
@@ -211,6 +215,7 @@ const CompanyDetails: React.FC<CompanyDetailsProps> = ({
             esgMetrics={displayMetrics}
             statement={claim.statement}
             aspect={claim.aspect}
+            categoryDetails={categoryDetails}
           />
 
 

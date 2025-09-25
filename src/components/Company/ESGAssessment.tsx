@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Box,
   Paper,
@@ -20,17 +20,20 @@ import {
   Info,
 } from '@mui/icons-material';
 import type { ESGMetrics } from '../../services/esgCalculations';
+import type { ESGCategoryDetails, ESGCategoryKey, ESGAttributeDetail } from '../../types';
 
 interface ESGAssessmentProps {
   esgMetrics: ESGMetrics;
   statement?: string;
   aspect?: string;
+  categoryDetails?: Record<ESGCategoryKey, ESGCategoryDetails> | null;
 }
 
 const ESGAssessment: React.FC<ESGAssessmentProps> = ({
   esgMetrics,
   statement,
-  aspect
+  aspect,
+  categoryDetails: categoryDetailsProp
 }) => {
   const {
     overallPercentage,
@@ -42,6 +45,13 @@ const ESGAssessment: React.FC<ESGAssessmentProps> = ({
     industryPercentile,
     lastUpdated
   } = esgMetrics;
+
+  // Layered navigation state
+  const [activeLayer, setActiveLayer] = useState<'overview' | 'category' | 'details'>('overview');
+  const [activeCategory, setActiveCategory] = useState<ESGCategoryKey | null>(null);
+  const [activeAttribute, setActiveAttribute] = useState<ESGAttributeDetail | null>(null);
+
+  const categoryDetails = categoryDetailsProp || null;
 
   // Get color based on score
   const getScoreColor = (score: number) => {
@@ -76,6 +86,43 @@ const ESGAssessment: React.FC<ESGAssessmentProps> = ({
     return 'error';
   };
 
+  const onOpenCategory = (key: ESGCategoryKey) => {
+    setActiveCategory(key);
+    setActiveLayer('category');
+  };
+
+  const onOpenAttribute = (attr: ESGAttributeDetail) => {
+    setActiveAttribute(attr);
+    setActiveLayer('details');
+  };
+
+  const onBack = () => {
+    if (activeLayer === 'details') {
+      setActiveLayer('category');
+      setActiveAttribute(null);
+    } else if (activeLayer === 'category') {
+      setActiveLayer('overview');
+      setActiveCategory(null);
+    }
+  };
+
+  const renderHeader = (
+    <Typography variant="h4" gutterBottom sx={{ 
+      fontWeight: 700, 
+      display: 'flex', 
+      alignItems: 'center', 
+      gap: 2,
+      mb: 3,
+      background: 'linear-gradient(135deg, #2563eb 0%, #10b981 100%)',
+      WebkitBackgroundClip: 'text',
+      WebkitTextFillColor: 'transparent',
+      backgroundClip: 'text'
+    }}>
+      <Assessment sx={{ fontSize: 36, color: 'primary.main' }} />
+      ESG Assessment
+    </Typography>
+  );
+
   return (
     <Paper elevation={2} sx={{ 
       p: 4, 
@@ -95,20 +142,7 @@ const ESGAssessment: React.FC<ESGAssessmentProps> = ({
         background: 'linear-gradient(90deg, #2563eb 0%, #10b981 50%, #f59e0b 100%)',
       }
     }}>
-      <Typography variant="h4" gutterBottom sx={{ 
-        fontWeight: 700, 
-        display: 'flex', 
-        alignItems: 'center', 
-        gap: 2,
-        mb: 3,
-        background: 'linear-gradient(135deg, #2563eb 0%, #10b981 100%)',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        backgroundClip: 'text'
-      }}>
-        <Assessment sx={{ fontSize: 36, color: 'primary.main' }} />
-        ESG Assessment
-      </Typography>
+      {renderHeader}
       
       {statement && (
         <Typography variant="body1" sx={{ lineHeight: 1.7, mb: 3, color: 'text.secondary' }}>
@@ -116,16 +150,17 @@ const ESGAssessment: React.FC<ESGAssessmentProps> = ({
         </Typography>
       )}
 
-      {/* Overall Score Card */}
+      {/* Layer 1: Overall Score Card (Main Grade Card) */}
       <Card sx={{ 
         mb: 4, 
         background: `linear-gradient(135deg, ${getScoreColor(overallPercentage)} 0%, rgba(255,255,255,0.95) 100%)`,
         border: '2px solid',
         borderColor: getScoreColor(overallPercentage),
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        cursor: 'pointer'
       }}>
-        <CardContent sx={{ p: 4 }}>
+        <CardContent sx={{ p: 4 }} onClick={() => setActiveLayer('category')}>
           <Grid container spacing={4} alignItems="center">
             <Grid item xs={12} md={6}>
               <Typography variant="h5" gutterBottom sx={{ 
@@ -222,7 +257,9 @@ const ESGAssessment: React.FC<ESGAssessmentProps> = ({
         </CardContent>
       </Card>
 
-      {/* ESG Pillar Breakdown */}
+      {/* Layer 2: Category Cards (E/S/G) */}
+      {activeLayer !== 'overview' && (
+        <>
       <Typography variant="h5" gutterBottom sx={{ 
         fontWeight: 700, 
         mb: 4,
@@ -250,7 +287,7 @@ const ESGAssessment: React.FC<ESGAssessmentProps> = ({
               borderColor: getScoreColor(environmentalScore),
             }
           }}>
-            <CardContent sx={{ pb: 1 }}>
+            <CardContent sx={{ pb: 1, cursor: 'pointer' }} onClick={() => onOpenCategory('environmental')}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Nature sx={{ color: getScoreColor(environmentalScore) }} />
@@ -331,7 +368,7 @@ const ESGAssessment: React.FC<ESGAssessmentProps> = ({
             position: 'relative',
             overflow: 'visible'
           }}>
-            <CardContent sx={{ pb: 1 }}>
+            <CardContent sx={{ pb: 1, cursor: 'pointer' }} onClick={() => onOpenCategory('social')}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <People sx={{ color: getScoreColor(socialScore) }} />
@@ -410,7 +447,7 @@ const ESGAssessment: React.FC<ESGAssessmentProps> = ({
             position: 'relative',
             overflow: 'visible'
           }}>
-            <CardContent sx={{ pb: 1 }}>
+            <CardContent sx={{ pb: 1, cursor: 'pointer' }} onClick={() => onOpenCategory('governance')}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <AccountBalance sx={{ color: getScoreColor(governanceScore) }} />
@@ -480,6 +517,64 @@ const ESGAssessment: React.FC<ESGAssessmentProps> = ({
           </Card>
         </Grid>
       </Grid>
+        </>
+      )}
+
+      {/* Layer 3: Category Details (attributes & data streams) */}
+      {activeLayer !== 'overview' && (
+        <Box sx={{ mt: 4 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+            <Typography variant="h6" sx={{ fontWeight: 700 }}>
+              {activeLayer === 'category' ? 'Category Details' : activeAttribute?.name}
+            </Typography>
+            <Chip label={activeLayer === 'details' ? 'Back to Category' : 'Back to Overview'} onClick={onBack} variant="outlined" />
+          </Box>
+
+          {activeLayer === 'category' && activeCategory && (
+            <Grid container spacing={2}>
+              {categoryDetails?.[activeCategory]?.attributes?.length
+                ? categoryDetails[activeCategory].attributes.map(attr => (
+                <Grid item xs={12} md={6} key={attr.id}>
+                  <Card sx={{ cursor: 'pointer' }} onClick={() => onOpenAttribute(attr)}>
+                    <CardContent>
+                      <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{attr.name}</Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>{attr.description}</Typography>
+                      <LinearProgress variant="determinate" value={attr.valuePercentage} sx={{ height: 8, borderRadius: 4, mb: 1 }} />
+                      <Typography variant="caption" color="text.secondary">Weight: {attr.weightPercentage}% • Value: {attr.valuePercentage}%</Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))
+                : (
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="text.secondary">No detailed attributes available for this category.</Typography>
+                  </Grid>
+                )}
+            </Grid>
+          )}
+
+          {activeLayer === 'details' && activeAttribute && (
+            <Card>
+              <CardContent>
+                <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1 }}>{activeAttribute.name}</Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>{activeAttribute.contributionExplanation}</Typography>
+                <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>Data Streams</Typography>
+                {(activeAttribute.dataStreams || []).map(ds => (
+                  <Box key={ds.id} sx={{ mb: 1 }}>
+                    <Typography variant="body2" sx={{ fontWeight: 600 }}>{ds.name}</Typography>
+                    {ds.description && <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>{ds.description}</Typography>}
+                    {ds.sourceUri && (
+                      <Typography variant="caption" sx={{ color: 'primary.main' }}>
+                        Source: <a href={ds.sourceUri} target="_blank" rel="noreferrer" style={{ color: 'inherit' }}>{ds.sourceUri}</a>
+                      </Typography>
+                    )}
+                  </Box>
+                ))}
+              </CardContent>
+            </Card>
+          )}
+        </Box>
+      )}
 
       {/* Weighting Explanation */}
       <Box sx={{ mt: 3, p: 2, bgcolor: 'info.light', borderRadius: 2, border: '1px solid', borderColor: 'info.main' }}>

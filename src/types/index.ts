@@ -89,3 +89,30 @@ export interface ApiError {
   message: string;
   status?: number;
 }
+
+// ESG Detail Structures for layered UI
+export type ESGCategoryKey = 'environmental' | 'social' | 'governance';
+
+export interface ESGDataStream {
+  id: string;
+  name: string;
+  sourceType: 'CLAIM' | 'VALIDATOR' | 'REPORT' | 'WEB' | 'OTHER';
+  description?: string;
+  sourceUri?: string;
+}
+
+export interface ESGAttributeDetail {
+  id: string;
+  name: string;
+  description?: string;
+  weightPercentage: number; // contribution weight within the category (0-100)
+  valuePercentage: number;  // normalized value (0-100)
+  contributionExplanation: string;
+  dataStreams: ESGDataStream[];
+}
+
+export interface ESGCategoryDetails {
+  category: ESGCategoryKey;
+  scorePercentage: number; // 0-100
+  attributes: ESGAttributeDetail[];
+}

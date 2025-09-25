@@ -1,4 +1,4 @@
-import type { Claim } from '../types';
+import type { Claim, ESGCategoryDetails, ESGAttributeDetail, ESGCategoryKey, ESGDataStream } from '../types';
 
 // ESG calculation service for frontend processing of API data
 export interface ESGMetrics {
@@ -461,6 +461,101 @@ export class ESGCalculationEngine {
     });
 
     return pillarDetails;
+  }
+
+  /**
+   * Derive detailed ESG attributes per category for UI third layer
+   */
+  static getCategoryAttributeDetails(claims: Claim[]): Record<ESGCategoryKey, ESGCategoryDetails> {
+    const validClaims = claims.filter(claim => 
+      claim.score !== undefined && 
+      claim.score !== null &&
+      claim.confidence !== undefined &&
+      claim.confidence > 0
+    );
+
+    const buildStreamsFromClaim = (claim: Claim): ESGDataStream[] => {
+      const streams: ESGDataStream[] = [];
+      streams.push({
+        id: `claim-${claim.id}`,
+        name: claim.aspect || 'ESG Claim',
+        sourceType: 'CLAIM',
+        description: claim.statement,
+        sourceUri: claim.sourceURI,
+      });
+      (claim.validators || []).forEach((v, idx) => {
+        streams.push({
+          id: `validator-${claim.id}-${idx}`,
+          name: `${v.name} (${v.role})`,
+          sourceType: 'VALIDATOR',
+          description: v.statement,
+        });
+      });
+      return streams;
+    };
+
+    const buildCategory = (category: ESGCategoryKey, keywords: string[], weight: number): ESGCategoryDetails => {
+      const catClaims = validClaims.filter(c => {
+        const a = (c.aspect || '').toLowerCase();
+        return keywords.some(k => a.includes(k));
+      });
+
+      // Fallback: use overall claims if none match
+      const working = catClaims.length > 0 ? catClaims : validClaims;
+
+      // Group into heuristic attributes by sub-keywords
+      const attributeSpecs: Array<{ id: string; name: string; keys: string[]; desc: string }>=
+        category === 'environmental' ? [
+          { id: 'climate', name: 'Climate & Emissions', keys: ['climate','carbon','emission','net-zero'], desc: 'Carbon footprint, emissions trends, and climate commitments.' },
+          { id: 'energy', name: 'Energy & Renewables', keys: ['energy','renewable','efficiency'], desc: 'Renewable energy adoption and energy efficiency measures.' },
+          { id: 'waste', name: 'Waste & Resources', keys: ['waste','recycle','resource','sustain'], desc: 'Waste reduction and circular resource management.' },
+        ] : category === 'social' ? [
+          { id: 'people', name: 'People & Diversity', keys: ['employee','diversity','inclusion','safety'], desc: 'Employee wellbeing, safety, and DEI initiatives.' },
+          { id: 'community', name: 'Community Impact', keys: ['community','social','rights'], desc: 'Community relations and social impact programs.' },
+          { id: 'supply', name: 'Labor & Supply Chain', keys: ['labor','supply','ethic','human rights'], desc: 'Labor practices and ethical supply chain management.' },
+        ] : [
+          { id: 'board', name: 'Board & Leadership', keys: ['board','leadership','independence'], desc: 'Board structure, independence, and oversight.' },
+          { id: 'transparency', name: 'Transparency & Reporting', keys: ['transparency','disclosure','audit'], desc: 'Disclosure quality and audit rigor.' },
+          { id: 'ethics', name: 'Ethics & Compliance', keys: ['ethic','compliance','risk'], desc: 'Ethical conduct and compliance programs.' },
+        ];
+
+      const attributes: ESGAttributeDetail[] = attributeSpecs.map(spec => {
+        const matched = working.filter(c => {
+          const a = (c.aspect || '').toLowerCase();
+          const s = (c.statement || '').toLowerCase();
+          return spec.keys.some(k => a.includes(k) || s.includes(k));
+        });
+        const avg = matched.length > 0 ? matched.reduce((sum, c) => sum + ((c.score ?? 0) + 1) / 2 * 100, 0) / matched.length : 0;
+        return {
+          id: spec.id,
+          name: spec.name,
+          description: spec.desc,
+          weightPercentage: Math.round((matched.length / Math.max(working.length,1)) * 100),
+          valuePercentage: Math.round(avg),
+          contributionExplanation: `Derived from ${matched.length} data stream(s) mapped to ${spec.name}. Higher confidence and recency increase influence.`,
+          dataStreams: matched.flatMap(buildStreamsFromClaim).slice(0, 10),
+        };
+      });
+
+      // Normalize weights to sum to 100
+      const totalWeight = attributes.reduce((s,a)=>s+a.weightPercentage,0) || 1;
+      const normalized = attributes.map(a => ({...a, weightPercentage: Math.round((a.weightPercentage/totalWeight)*100)}));
+
+      // Compute category score as weighted avg of attribute values
+      const score = Math.round(normalized.reduce((s,a)=> s + (a.valuePercentage * (a.weightPercentage/100)), 0));
+
+      return {
+        category,
+        scorePercentage: score,
+        attributes: normalized,
+      };
+    };
+
+    return {
+      environmental: buildCategory('environmental', ESG_ASPECT_MAPPING.environmental, 0.4),
+      social: buildCategory('social', ESG_ASPECT_MAPPING.social, 0.3),
+      governance: buildCategory('governance', ESG_ASPECT_MAPPING.governance, 0.3),
+    };
   }
 
   /**
