@@ -20,7 +20,6 @@ import { GradeChip } from '../Common';
 import { transformUtils } from '../../services/utils';
 import { calculateGrade } from '../../theme/theme';
 import { useESGMetrics } from '../../hooks';
-import ESGCalculationEngine from '../../services/esgCalculations';
 import { ESGAssessment, ValidationEndorsements } from './';
 import type { ESGMetrics, ValidationMetrics } from '../../services/esgCalculations';
 import type { ESGCategoryDetails, ESGCategoryKey } from '../../types';

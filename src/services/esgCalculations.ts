@@ -494,7 +494,7 @@ export class ESGCalculationEngine {
       return streams;
     };
 
-    const buildCategory = (category: ESGCategoryKey, keywords: string[], weight: number): ESGCategoryDetails => {
+    const buildCategory = (category: ESGCategoryKey, keywords: string[]): ESGCategoryDetails => {
       const catClaims = validClaims.filter(c => {
         const a = (c.aspect || '').toLowerCase();
         return keywords.some(k => a.includes(k));
@@ -552,9 +552,9 @@ export class ESGCalculationEngine {
     };
 
     return {
-      environmental: buildCategory('environmental', ESG_ASPECT_MAPPING.environmental, 0.4),
-      social: buildCategory('social', ESG_ASPECT_MAPPING.social, 0.3),
-      governance: buildCategory('governance', ESG_ASPECT_MAPPING.governance, 0.3),
+      environmental: buildCategory('environmental', ESG_ASPECT_MAPPING.environmental),
+      social: buildCategory('social', ESG_ASPECT_MAPPING.social),
+      governance: buildCategory('governance', ESG_ASPECT_MAPPING.governance),
     };
   }
 

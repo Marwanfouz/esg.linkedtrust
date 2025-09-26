@@ -16,7 +16,6 @@ import {
 } from '@mui/icons-material';
 import { useClaim } from '../hooks';
 import ESGCalculationEngine from '../services/esgCalculations';
-import type { ESGCategoryDetails, ESGCategoryKey } from '../types';
 import { CompanyDetails } from '../components/Company';
 import { LoadingSpinner, ErrorMessage } from '../components/Common';
 
